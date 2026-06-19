@@ -1,11 +1,25 @@
+<<<<<<< HEAD
+from fastapi import FastAPI
+=======
 from fastapi import FastAPI
 from pydantic import BaseModel
+>>>>>>> 279615c6c38a8bb400efba78af436b3d31ff699f
 
 app = FastAPI(
     title="CloudLabs AI Proctor API",
     version="0.1.0"
 )
 
+<<<<<<< HEAD
+@app.get("/")
+def root():
+    return {"message": "CloudLabs AI Proctor API is running"}
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
+
+=======
 
 class ChatRequest(BaseModel):
     user_message: str
@@ -37,3 +51,4 @@ def chat(request: ChatRequest):
         "step": request.step,
         "needs_escalation": False
     }
+>>>>>>> 279615c6c38a8bb400efba78af436b3d31ff699f
