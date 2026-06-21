@@ -24,3 +24,9 @@ def clear_session(session_id: str):
 
     if session_id in sessions:
         del sessions[session_id]
+
+def delete_session(session_id: str):
+    if session_id in sessions:
+        del sessions[session_id]
+        return True
+    return False

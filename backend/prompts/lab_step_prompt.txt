@@ -1,1 +1,3 @@
+Guide the user through the requested exercise, task, or step.
 
+Be precise and provide instructions in sequence.

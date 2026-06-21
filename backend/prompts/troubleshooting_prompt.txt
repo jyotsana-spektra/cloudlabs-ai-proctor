@@ -1,1 +1,10 @@
+Troubleshoot the issue step by step.
 
+Ask for:
+- Exact error message
+- Current exercise
+- Task number
+- Step number
+- Actions already attempted
+
+Provide clear next actions.

@@ -12,7 +12,7 @@ def search_knowledge_base(question: str, question_type: str) -> dict:
 
     elif question_type == "lab_help":
         folders_to_search = [
-            kb_path / "lab-guides"
+            kb_path / "labguides"
         ]
 
     else:
@@ -34,8 +34,8 @@ def search_knowledge_base(question: str, question_type: str) -> dict:
             with open(md_file, "r", encoding="utf-8") as file:
                 content = file.read()
 
-            score = 0
             content_lower = content.lower()
+            score = 0
 
             for keyword in keywords:
                 if keyword in content_lower:
@@ -56,5 +56,9 @@ def search_knowledge_base(question: str, question_type: str) -> dict:
     return {
         "found": False,
         "source": None,
-        "content": "No relevant information was found in the knowledge base. Ask the user for the lab name, exercise, task, step number, and exact error message so troubleshooting can continue."
+        "content": (
+            "No relevant information was found in the knowledge base. "
+            "Please provide the lab name, exercise, task, step number, "
+            "and exact error message so troubleshooting can continue."
+        )
     }

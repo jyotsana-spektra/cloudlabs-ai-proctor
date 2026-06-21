@@ -1,23 +1,25 @@
-def generate_response(question: str, knowledge_content: str) -> str:
+def generate_response(user_message, knowledge_content, history=None):
 
-    response = f"""
-It appears that you're experiencing the following issue:
+    response = ""
 
-{question}
+    if history and len(history) > 0:
 
-Based on the information available, please review the following guidance:
+        previous_context = "\n".join(
+            [
+                f"{msg['role']}: {msg['message']}"
+                for msg in history[-5:]
+            ]
+        )
 
-{knowledge_content}
+        response += (
+            "Conversation context:\n"
+            + previous_context
+            + "\n\n"
+        )
 
-Please try the recommended steps one at a time.
+    response += (
+        "Based on the available information:\n\n"
+        + knowledge_content
+    )
 
-If the issue still persists, tell me:
-
-• The exact error message
-• The current exercise, task, and step
-• What you have already tried
-
-I will continue troubleshooting and help you resolve the issue.
-"""
-
-    return response.strip()
+    return response

@@ -1,21 +1,42 @@
 def classify_question(question: str) -> str:
+
     question = question.lower()
 
     troubleshooting_keywords = [
-        "error", "issue", "failed", "failure", "cannot", "can't",
-        "unable", "stuck", "not working", "not loading",
-        "unavailable", "access denied", "permission", "vm", "rdp",
-        "deployment failed", "button not visible"
+        "error",
+        "failed",
+        "failure",
+        "issue",
+        "problem",
+        "cannot",
+        "can't",
+        "stuck",
+        "login",
+        "denied",
+        "timeout",
+        "loading",
+        "vm",
+        "browser"
     ]
 
-    lab_help_keywords = [
-        "how", "create", "configure", "setup", "where",
-        "what step", "which option", "task", "exercise",
-        "workspace", "lakehouse", "eventhouse", "ontology"
+    lab_keywords = [
+        "exercise",
+        "task",
+        "step",
+        "workspace",
+        "lakehouse",
+        "eventhouse",
+        "ontology",
+        "agent",
+        "fabric"
     ]
 
-    if any(keyword in question for keyword in troubleshooting_keywords):
-        return "troubleshooting"
+    for keyword in troubleshooting_keywords:
+        if keyword in question:
+            return "troubleshooting"
 
-    if any(keyword in question for keyword in lab_help_keywords):
-        return "lab_help"
+    for keyword in lab_keywords:
+        if keyword in question:
+            return "lab_help"
+
+    return "general"
