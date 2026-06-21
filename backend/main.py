@@ -78,7 +78,8 @@ def chat(request: ChatRequest):
 
     kb_result = search_knowledge_base(
         request.user_message,
-        question_type
+        question_type,
+        request.lab_id
     )
 
     history = get_session(session_id)
@@ -97,6 +98,7 @@ def chat(request: ChatRequest):
         "answer": ai_answer,
         "source": kb_result["source"],
         "found": kb_result["found"],
+        "score": kb_result.get("score", 0),
         "history": get_session(session_id),
         "lab_context": {
             "lab_id": request.lab_id,

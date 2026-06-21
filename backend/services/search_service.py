@@ -1,7 +1,13 @@
 from pathlib import Path
 
+from backend.utils.chunking import chunk_text
 
-def search_knowledge_base(question: str, question_type: str) -> dict:
+
+def search_knowledge_base(
+    question: str,
+    question_type: str,
+    lab_id: str | None = None
+) -> dict:
     kb_path = Path("knowledge-base")
 
     if question_type == "troubleshooting":
@@ -11,9 +17,14 @@ def search_knowledge_base(question: str, question_type: str) -> dict:
         ]
 
     elif question_type == "lab_help":
-        folders_to_search = [
-            kb_path / "labguides"
-        ]
+        if lab_id:
+            folders_to_search = [
+                kb_path / "labguides" / lab_id
+            ]
+        else:
+            folders_to_search = [
+                kb_path / "labguides"
+            ]
 
     else:
         folders_to_search = [
@@ -24,7 +35,7 @@ def search_knowledge_base(question: str, question_type: str) -> dict:
 
     best_match = None
     best_score = 0
-    best_content = ""
+    best_chunk = ""
 
     for folder in folders_to_search:
         if not folder.exists():
@@ -34,23 +45,27 @@ def search_knowledge_base(question: str, question_type: str) -> dict:
             with open(md_file, "r", encoding="utf-8") as file:
                 content = file.read()
 
-            content_lower = content.lower()
-            score = 0
+            chunks = chunk_text(content)
 
-            for keyword in keywords:
-                if keyword in content_lower:
-                    score += 1
+            for chunk in chunks:
+                chunk_lower = chunk.lower()
+                score = 0
 
-            if score > best_score:
-                best_score = score
-                best_match = md_file
-                best_content = content
+                for keyword in keywords:
+                    if keyword in chunk_lower:
+                        score += 1
+
+                if score > best_score:
+                    best_score = score
+                    best_match = md_file
+                    best_chunk = chunk
 
     if best_match:
         return {
             "found": True,
             "source": str(best_match),
-            "content": best_content
+            "content": best_chunk,
+            "score": best_score
         }
 
     return {
@@ -60,5 +75,6 @@ def search_knowledge_base(question: str, question_type: str) -> dict:
             "No relevant information was found in the knowledge base. "
             "Please provide the lab name, exercise, task, step number, "
             "and exact error message so troubleshooting can continue."
-        )
+        ),
+        "score": 0
     }
