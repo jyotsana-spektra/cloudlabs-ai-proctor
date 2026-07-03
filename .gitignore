@@ -1,1 +1,25 @@
+# Python
+__pycache__/
+*.pyc
 
+# Environment
+.env
+
+# Node
+node_modules/
+
+# Vite
+dist/
+
+# Logs
+*.log
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Analytics
+analytics/search_index.json

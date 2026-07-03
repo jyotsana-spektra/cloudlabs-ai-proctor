@@ -1,0 +1,11 @@
+repositories:
+
+  - name: CloudLabs AI Proctor
+    type: local
+    path: knowledge-base
+
+future_repositories:
+
+  - github_url: https://github.com/example/cloudlabs-labs
+
+  - github_url: https://github.com/example/fabric-labs

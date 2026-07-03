@@ -1,0 +1,18 @@
+[
+  {
+    "timestamp": "2026-06-30T16:04:41.646652",
+    "session_id": "test1",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "Please try the following steps to resolve the VM not loading issue:\n\n1. Wait 2\u20133 minutes to allow the VM to start.\n2. Refresh the CloudLabs page.\n3. Attempt to open the VM again.\n4. Ensure you are using a supported browser like Microsoft Edge or Chrome.\n\nIf the VM still does not load after these steps, please let me know.",
+    "source": "knowledge-base/troubleshooting/vm-not-loading.md",
+    "score": 4,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2",
+      "task": "Task 3",
+      "step": "Step 5"
+    }
+  }
+]

@@ -1,0 +1,14 @@
+knowledge_base_path: knowledge-base
+
+chunk_size: 800
+
+chunk_overlap: 100
+
+supported_extensions:
+  - ".md"
+
+generate_embeddings: true
+
+embedding_model: text-embedding-3-small
+
+output_index: analytics/search_index.json

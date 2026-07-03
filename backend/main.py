@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from backend.config import settings
 from backend.models import ChatRequest
 
 from backend.services.classifier_service import classify_question
@@ -11,6 +12,7 @@ from backend.services.session_service import (
     get_session,
     clear_session
 )
+from backend.services.logger_service import log_chat_event
 
 from backend.utils.validators import validate_chat_request
 
@@ -23,8 +25,8 @@ from backend.routes import admin
 
 
 app = FastAPI(
-    title="CloudLabs AI Proctor API",
-    version="1.0.0"
+    title=settings.APP_NAME,
+    version=settings.APP_VERSION
 )
 
 
@@ -49,7 +51,7 @@ app.include_router(admin.router, prefix="/admin", tags=["Admin"])
 def root():
     return {
         "message": "CloudLabs AI Proctor API is running",
-        "version": "1.0.0"
+        "version": settings.APP_VERSION
     }
 
 
@@ -63,8 +65,8 @@ def health_check():
 @app.get("/version")
 def version():
     return {
-        "name": "CloudLabs AI Proctor API",
-        "version": "1.0.0",
+        "name": settings.APP_NAME,
+        "version": settings.APP_VERSION,
         "status": "running"
     }
 
@@ -81,6 +83,14 @@ def chat(request: ChatRequest):
         }
 
     session_id = request.session_id or "default"
+
+    lab_context = {
+        "lab_id": request.lab_id,
+        "lab_name": request.lab_name,
+        "exercise": request.exercise,
+        "task": request.task,
+        "step": request.step
+    }
 
     add_message(session_id, "user", request.user_message)
 
@@ -102,6 +112,16 @@ def chat(request: ChatRequest):
 
     add_message(session_id, "assistant", ai_answer)
 
+    log_chat_event(
+        session_id=session_id,
+        user_message=request.user_message,
+        ai_answer=ai_answer,
+        question_type=question_type,
+        source=kb_result["source"],
+        score=kb_result.get("score", 0),
+        lab_context=lab_context
+    )
+
     return {
         "session_id": session_id,
         "question_type": question_type,
@@ -110,13 +130,7 @@ def chat(request: ChatRequest):
         "found": kb_result["found"],
         "score": kb_result.get("score", 0),
         "history": get_session(session_id),
-        "lab_context": {
-            "lab_id": request.lab_id,
-            "lab_name": request.lab_name,
-            "exercise": request.exercise,
-            "task": request.task,
-            "step": request.step
-        }
+        "lab_context": lab_context
     }
 
 
