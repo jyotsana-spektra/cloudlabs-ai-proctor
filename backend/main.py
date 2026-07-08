@@ -96,19 +96,41 @@ def chat(request: ChatRequest):
 
     question_type = classify_question(request.user_message)
 
+    contextual_query = f"""
+Lab Name: {request.lab_name}
+Exercise: {request.exercise}
+Task: {request.task}
+Step: {request.step}
+
+User Question:
+{request.user_message}
+"""
+
     kb_result = search_knowledge_base(
-        request.user_message,
+        contextual_query,
         question_type,
         request.lab_id
     )
 
     history = get_session(session_id)
 
+    ai_prompt = f"""
+    Current Lab Context:
+    Lab Name: {request.lab_name}
+    Exercise: {request.exercise}
+    Task: {request.task}
+    Step: {request.step}
+
+    User Question:
+    {request.user_message}
+    """
+
     ai_answer = generate_response(
-        request.user_message,
+        ai_prompt,
         kb_result["content"],
         history
     )
+    
 
     add_message(session_id, "assistant", ai_answer)
 

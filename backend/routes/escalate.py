@@ -1,25 +1,37 @@
-import requests
+from fastapi import APIRouter
+from pydantic import BaseModel
 
-BASE_URL = "http://localhost:8000"
+from backend.services.escalation_service import (
+    save_escalation,
+    get_escalations,
+)
 
-
-def test_create_escalation():
-    payload = {
-        "session_id": "test-session",
-        "issue_summary": "User is unable to load the VM.",
-        "lab_id": "fabric",
-        "lab_name": "Fabric IQ",
-        "exercise": "Exercise 2",
-        "task": "Task 3",
-        "step": "Step 5"
-    }
-
-    response = requests.post(f"{BASE_URL}/escalate/", json=payload)
-
-    assert response.status_code == 200
+router = APIRouter()
 
 
-def test_list_escalations():
-    response = requests.get(f"{BASE_URL}/escalate/")
+class EscalationRequest(BaseModel):
+    session_id: str
+    issue_summary: str
+    lab_id: str | None = None
+    lab_name: str | None = None
+    exercise: str | None = None
+    task: str | None = None
+    step: str | None = None
 
-    assert response.status_code == 200
+
+@router.post("/")
+def create_escalation(request: EscalationRequest):
+    return save_escalation(
+        request.session_id,
+        request.issue_summary,
+        request.lab_id,
+        request.lab_name,
+        request.exercise,
+        request.task,
+        request.step,
+    )
+
+
+@router.get("/")
+def list_escalations():
+    return get_escalations()

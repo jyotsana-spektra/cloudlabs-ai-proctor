@@ -10,28 +10,40 @@ def search_knowledge_base(
 ) -> dict:
     kb_path = Path("knowledge-base")
 
-    if question_type == "troubleshooting":
-        folders_to_search = [
-            kb_path / "troubleshooting",
-            kb_path / "known-issues"
-        ]
+    folders_to_search = []
 
-    elif question_type == "lab_help":
-        if lab_id:
-            folders_to_search = [
-                kb_path / "labguides" / lab_id
-            ]
-        else:
-            folders_to_search = [
-                kb_path / "labguides"
-            ]
+    if lab_id:
+        folders_to_search.append(kb_path / "labguides" / lab_id)
 
-    else:
-        folders_to_search = [
-            kb_path / "faqs"
-        ]
+    folders_to_search.extend([
+        kb_path / "labguides",
+        kb_path / "troubleshooting",
+        kb_path / "known-issues",
+        kb_path / "faqs"
+    ])
 
-    keywords = question.lower().split()
+    keywords = [
+        word.strip().lower()
+        for word in question.replace("\n", " ").split()
+        if len(word.strip()) > 2
+    ]
+
+    priority_keywords = [
+        "exercise",
+        "task",
+        "step",
+        "lab",
+        "workspace",
+        "vm",
+        "login",
+        "fabric",
+        "lakehouse",
+        "eventhouse",
+        "agent",
+        "deployment",
+        "access",
+        "browser"
+    ]
 
     best_match = None
     best_score = 0
@@ -42,25 +54,38 @@ def search_knowledge_base(
             continue
 
         for md_file in folder.rglob("*.md"):
-            with open(md_file, "r", encoding="utf-8") as file:
-                content = file.read()
+            try:
+                content = md_file.read_text(encoding="utf-8", errors="ignore")
+                chunks = chunk_text(content)
 
-            chunks = chunk_text(content)
+                for chunk in chunks:
+                    chunk_lower = chunk.lower()
+                    file_lower = str(md_file).lower()
 
-            for chunk in chunks:
-                chunk_lower = chunk.lower()
-                score = 0
+                    score = 0
 
-                for keyword in keywords:
-                    if keyword in chunk_lower:
-                        score += 1
+                    for keyword in keywords:
+                        if keyword in chunk_lower:
+                            score += 1
+                        if keyword in file_lower:
+                            score += 1
 
-                if score > best_score:
-                    best_score = score
-                    best_match = md_file
-                    best_chunk = chunk
+                    for priority in priority_keywords:
+                        if priority in question.lower() and priority in chunk_lower:
+                            score += 2
 
-    if best_match:
+                    if lab_id and lab_id.lower() in file_lower:
+                        score += 3
+
+                    if score > best_score:
+                        best_score = score
+                        best_match = md_file
+                        best_chunk = chunk
+
+            except Exception:
+                continue
+
+    if best_match and best_score >= 3:
         return {
             "found": True,
             "source": str(best_match),
@@ -72,9 +97,9 @@ def search_knowledge_base(
         "found": False,
         "source": None,
         "content": (
-            "No relevant information was found in the knowledge base. "
-            "Please provide the lab name, exercise, task, step number, "
-            "and exact error message so troubleshooting can continue."
+            "No strong matching lab content was found. "
+            "Use the provided lab name, exercise, task, step, and user issue "
+            "to ask a focused follow-up question and provide general troubleshooting guidance."
         ),
-        "score": 0
+        "score": best_score
     }

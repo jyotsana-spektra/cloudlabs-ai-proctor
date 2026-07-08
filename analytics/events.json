@@ -14,5 +14,293 @@
       "task": "Task 3",
       "step": "Step 5"
     }
+  },
+  {
+    "timestamp": "2026-07-06T18:07:25.797380",
+    "session_id": "frontend-user-1",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "To troubleshoot your VM not loading in CloudLabs:\n\n1. Refresh the browser page.\n2. Clear your browser cache and cookies.\n3. Try accessing the VM using a different browser.\n4. Ensure your internet connection is stable.\n5. Restart the VM from the CloudLabs portal if possible.\n\nIf the issue persists after these steps, please provide:\n\n- Browser name and version\n- Operating system\n- Any error messages or screenshots\n\nThis will help further diagnose the problem.",
+    "source": "knowledge-base/troubleshooting/browser-issues.md",
+    "score": 4,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2 of 5",
+      "task": "Task 3",
+      "step": "Step 5"
+    }
+  },
+  {
+    "timestamp": "2026-07-06T18:15:09.198909",
+    "session_id": "frontend-user-1",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "Please try the following steps to resolve the VM not loading issue:\n\n1. Clear your browser cache and cookies.\n2. Refresh the portal page.\n3. Try accessing the VM using a different browser.\n4. Ensure your internet connection is stable.\n\nIf the VM still does not load after these steps, please provide:\n\n- Browser name and version\n- Operating system\n- Any error messages or screenshots\n\nThis information will help further troubleshoot the problem.",
+    "source": "knowledge-base/troubleshooting/browser-issues.md",
+    "score": 4,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2 of 5",
+      "task": "Task 3",
+      "step": "Step 5"
+    }
+  },
+  {
+    "timestamp": "2026-07-06T18:17:44.456975",
+    "session_id": "frontend-user-1",
+    "question_type": "troubleshooting",
+    "user_message": "I cannot login",
+    "ai_answer": "To help resolve your login issue, please provide the following details:\n\n- Session ID\n- Lab Name\n- Username (do not include your password)\n- Browser name and version\n- Screenshot or exact error message you see\n\nThis information will help diagnose the problem and guide you with specific troubleshooting steps.",
+    "source": "knowledge-base/troubleshooting/login-issues.md",
+    "score": 3,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2 of 5",
+      "task": "Task 3",
+      "step": "Step 5"
+    }
+  },
+  {
+    "timestamp": "2026-07-07T08:52:27.706139",
+    "session_id": "frontend-user-1",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "To troubleshoot your VM not loading in CloudLabs, please try the following steps:\n\n1. Refresh the browser page.\n2. Clear your browser cache and cookies.\n3. Try accessing the VM using a different browser.\n4. Ensure your internet connection is stable.\n5. Restart the VM from the CloudLabs portal if possible.\n\nIf the issue persists after these steps, please provide:\n\n- Browser name and version\n- Operating system\n- Any error messages or screenshots\n\nThis information will help further diagnose the problem.",
+    "source": "knowledge-base/troubleshooting/browser-issues.md",
+    "score": 4,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2 of 5",
+      "task": "Task 3",
+      "step": "Step 5"
+    }
+  },
+  {
+    "timestamp": "2026-07-07T09:41:39.644758",
+    "session_id": "frontend-user-1",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "To troubleshoot the VM not loading issue in CloudLabs, please try the following steps:\n\n1. Clear your browser cache and cookies.\n2. Restart the browser and try loading the VM again.\n3. Try accessing the VM using a different browser.\n4. Ensure your internet connection is stable.\n\nIf the issue persists after these steps, please provide:\n\n- Browser name and version\n- Operating system\n- A screenshot of the issue\n\nThis information will help further diagnose the problem.",
+    "source": "knowledge-base/troubleshooting/browser-issues.md",
+    "score": 4,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2 of 5",
+      "task": "Task 3",
+      "step": "Step 5"
+    }
+  },
+  {
+    "timestamp": "2026-07-07T09:46:42.680028",
+    "session_id": "frontend-user-1",
+    "question_type": "troubleshooting",
+    "user_message": "I cannot login",
+    "ai_answer": "To help resolve your login issue, please provide the following details:\n\n- Session ID\n- Lab Name\n- Username (do not include the password)\n- Browser you are using\n- Screenshot of the error message you receive\n\nThis information will help identify the cause and guide you with specific troubleshooting steps.",
+    "source": "knowledge-base/troubleshooting/login-issues.md",
+    "score": 3,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2 of 5",
+      "task": "Task 3",
+      "step": "Step 5"
+    }
+  },
+  {
+    "timestamp": "2026-07-07T09:46:51.323614",
+    "session_id": "frontend-user-1",
+    "question_type": "general",
+    "user_message": "What should I do next in the lab?",
+    "ai_answer": "Please follow the next step as outlined in your specific lab guide. If you are unsure, review the lab instructions or tasks provided within the CloudLabs interface.\n\nIf your VM is disconnected or unresponsive, try reconnecting or restarting the lab session as needed.\n\nLet me know if you need help with a particular step or task in the lab!",
+    "source": "knowledge-base/faqs/vm-faq.md",
+    "score": 6,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2 of 5",
+      "task": "Task 3",
+      "step": "Step 5"
+    }
+  },
+  {
+    "timestamp": "2026-07-07T09:46:57.117659",
+    "session_id": "frontend-user-1",
+    "question_type": "general",
+    "user_message": "What should I do next in the lab?",
+    "ai_answer": "Please follow the next step as outlined in your specific lab guide. If you are unsure, review the lab instructions provided within the CloudLabs interface.\n\nIf your VM is disconnected, try reconnecting to the lab. If the issue continues, restart the lab session.\n\nLet me know if you need help with a particular task or step!",
+    "source": "knowledge-base/faqs/vm-faq.md",
+    "score": 6,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2 of 5",
+      "task": "Task 3",
+      "step": "Step 5"
+    }
+  },
+  {
+    "timestamp": "2026-07-07T09:47:11.097634",
+    "session_id": "frontend-user-1",
+    "question_type": "troubleshooting",
+    "user_message": "I already waited 2-3 minutes but VM is still not loading",
+    "ai_answer": "If your VM is not loading after 2-3 minutes, try these troubleshooting steps:\n\n1. Refresh your browser page.\n2. Clear your browser cache and cookies.\n3. Ensure you are using a supported browser (latest versions of Chrome, Edge, or Firefox).\n4. Disable any browser extensions that might interfere.\n5. Close other tabs or applications that may consume high resources.\n6. Try opening the lab in an incognito/private browsing window.\n7. If the issue persists, restart the lab session from the CloudLabs interface.\n\nLet me know if the VM still does not load after these steps.",
+    "source": "knowledge-base/troubleshooting/browser-issues.md",
+    "score": 5,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2 of 5",
+      "task": "Task 3",
+      "step": "Step 5"
+    }
+  },
+  {
+    "timestamp": "2026-07-07T09:53:20.645593",
+    "session_id": "frontend-user-1",
+    "question_type": "troubleshooting",
+    "user_message": "exercise 2, task 1 , i am having problem",
+    "ai_answer": "For Exercise 2, Task 1, if you are experiencing problems, please try the following troubleshooting steps:\n\n1. Refresh your browser and try reconnecting to the VM.\n2. Clear your browser cache or try using an incognito/private window.\n3. Ensure you are using a supported browser (Chrome, Edge, Firefox latest versions).\n4. Restart the lab session from the CloudLabs interface.\n5. Check for any error messages and note them down.\n\nIf the problem persists, please provide the following details so I can assist you better:\n\n- Session ID\n- Lab Name\n- Exercise number\n- Task number\n- Browser you are using\n- Screenshot or description of the error message\n\nThis information will help diagnose the issue more effectively.",
+    "source": "knowledge-base/troubleshooting/vm-not-loading.md",
+    "score": 4,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2 of 5",
+      "task": "Task 3",
+      "step": "Step 5"
+    }
+  },
+  {
+    "timestamp": "2026-07-07T09:56:30.832793",
+    "session_id": "frontend-user-1",
+    "question_type": "general",
+    "user_message": "Azure portal is not opening",
+    "ai_answer": "If the Azure portal is not opening, please try the following steps:\n\n1. Refresh your browser.\n2. Clear your browser cache and cookies.\n3. Open the Azure portal in an Incognito or InPrivate browser window.\n4. Ensure you are using the credentials provided for the lab, not your personal Microsoft account.\n5. If the issue persists, restart the lab session from the CloudLabs portal.\n\nLet me know if you continue to experience issues after these steps.",
+    "source": "knowledge-base/faqs/cloudlabs-faq.md",
+    "score": 4,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2 of 5",
+      "task": "Task 3",
+      "step": "Step 5"
+    }
+  },
+  {
+    "timestamp": "2026-07-07T09:56:55.823250",
+    "session_id": "frontend-user-1",
+    "question_type": "troubleshooting",
+    "user_message": "I already waited 2-3 minutes but VM is still not loading",
+    "ai_answer": "If your VM is still not loading after 2-3 minutes, please follow these detailed troubleshooting steps:\n\n1. **Refresh the browser page** to retry loading the VM.\n2. **Clear your browser cache and cookies** to remove any corrupted data.\n3. **Try opening the lab in an Incognito/Private browsing window** to avoid extension or cache interference.\n4. **Use a supported browser** such as the latest version of Chrome, Edge, or Firefox.\n5. **Disable any browser extensions** that might block scripts or content.\n6. **Close other tabs or applications** that may be consuming high system resources.\n7. **Restart the lab session** from the CloudLabs interface to reset the VM environment.\n\nIf after these steps the VM still does not load, please provide any error messages or screenshots you see, and specify your browser and version. This will help further diagnose the issue.",
+    "source": "knowledge-base/troubleshooting/browser-issues.md",
+    "score": 5,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2 of 5",
+      "task": "Task 3",
+      "step": "Step 5"
+    }
+  },
+  {
+    "timestamp": "2026-07-07T11:30:57.061943",
+    "session_id": "frontend-user-1",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "If your VM is not loading in CloudLabs, try the following steps:\n\n1. Refresh your browser and try reconnecting to the VM.\n2. Clear your browser cache and cookies, then reload the lab.\n3. Ensure you have a stable internet connection.\n4. Try using a different browser to rule out browser-specific issues.\n5. If the VM is stuck provisioning, wait a few minutes and try again.\n6. If the problem persists, gather the following details for further troubleshooting:\n   - Session ID\n   - Lab Name\n   - Exercise and Task you are on\n   - Browser you are using\n   - Screenshot of the error message\n\nLet me know if you need help collecting this information or further assistance.",
+    "source": "knowledge-base/troubleshooting/vm-not-loading.md",
+    "score": 17,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    }
+  },
+  {
+    "timestamp": "2026-07-07T11:35:22.440676",
+    "session_id": "frontend-user-1",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "If your VM is not loading, please try these steps:\n\n1. Refresh your browser and attempt to reconnect.\n2. Clear your browser cache and cookies.\n3. Try a different browser to rule out browser-specific issues.\n4. Ensure your internet connection is stable.\n5. Wait a few minutes in case the VM is still provisioning.\n\nIf the VM still does not load, please provide the following information for further troubleshooting:\n\n- Session ID\n- Lab Name\n- Exercise\n- Task\n- Browser you are using\n- Screenshot of the error message\n\nThis will help identify if the issue is related to deployment failure, access, or browser problems.",
+    "source": "knowledge-base/troubleshooting/vm-not-loading.md",
+    "score": 17,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    }
+  },
+  {
+    "timestamp": "2026-07-07T11:35:46.372365",
+    "session_id": "frontend-user-1",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "If your VM is not loading, please try these troubleshooting steps:\n\n1. Refresh your browser and try reconnecting.\n2. Clear your browser cache and cookies.\n3. Try using a different browser.\n4. Check your internet connection for stability.\n5. Wait a few minutes in case the VM is still provisioning or experiencing a delay.\n\nIf the issue persists, please provide the following details to assist further:\n\n- Session ID\n- Lab Name\n- Exercise\n- Task\n- Browser you are using\n- Screenshot of any error message\n\nThis information will help identify if the problem is related to deployment failure, access issues, or browser problems.",
+    "source": "knowledge-base/troubleshooting/vm-not-loading.md",
+    "score": 17,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    }
+  },
+  {
+    "timestamp": "2026-07-07T11:40:08.638148",
+    "session_id": "frontend-user-1",
+    "question_type": "troubleshooting",
+    "user_message": "I already waited 2-3 minutes but the issue is still happening.",
+    "ai_answer": "Since waiting did not resolve the issue, please try the following next steps:\n\n1. Clear your browser cache and cookies, then reload the lab.\n2. Try accessing the VM using a different browser.\n3. Ensure your internet connection is stable and not blocking any required ports.\n4. If possible, restart the lab session to trigger a fresh VM deployment.\n\nIf the VM still does not load, please provide these details for further troubleshooting:\n\n- Session ID\n- Lab Name\n- Exercise and Task number\n- Browser you are using\n- Screenshot of any error messages\n\nThis information will help diagnose if the issue is related to VM provisioning or connectivity.",
+    "source": "knowledge-base/labguides/fabric/ISSUE_TEMPLATE.md",
+    "score": 16,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    }
+  },
+  {
+    "timestamp": "2026-07-07T15:28:49.910229",
+    "session_id": "frontend-user-1",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "To troubleshoot the VM not loading in your CloudLabs lab, please try the following steps:\n\n1. Refresh your browser or try opening the lab in a different browser to rule out browser issues.\n2. Clear your browser cache and cookies, then reload the lab.\n3. Check your internet connection to ensure it is stable.\n4. Wait a few minutes as sometimes VM provisioning can be delayed.\n5. If the VM still does not load, take a screenshot of the error message.\n6. Provide the following details for further assistance:\n   - Session ID\n   - Lab Name: Current CloudLabs Lab\n   - Exercise: Exercise 1\n   - Task: Task 1\n   - Browser you are using\n   - Screenshot of the error\n\nLet me know if you need help with any of these steps.",
+    "source": "knowledge-base/troubleshooting/vm-not-loading.md",
+    "score": 17,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    }
+  },
+  {
+    "timestamp": "2026-07-08T10:44:31.570452",
+    "session_id": "frontend-user-1",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "To troubleshoot the VM not loading in your CloudLabs lab, please try the following steps:\n\n1. Refresh your browser or try opening the lab in a different browser to rule out browser-related issues.\n2. Clear your browser cache and cookies, then reload the lab.\n3. Check your internet connection to ensure it is stable.\n4. If the VM is stuck provisioning, wait a few minutes as sometimes there can be deployment delays.\n5. Restart the VM from the CloudLabs interface if that option is available.\n6. If the issue persists, take a screenshot of the error message and note your session ID, lab name, exercise, task, and browser details.\n\nLet me know if you need further assistance with any of these steps.",
+    "source": "knowledge-base/troubleshooting/vm-not-loading.md",
+    "score": 17,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    }
   }
 ]
