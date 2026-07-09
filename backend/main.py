@@ -64,7 +64,7 @@ _last_kb_result_by_session: dict[str, dict] = {}
 @app.get("/")
 def root():
     return {
-        "message": "CloudLabs AI Proctor API is running",
+        "message": "Brainy API is running",
         "version": settings.APP_VERSION
     }
 

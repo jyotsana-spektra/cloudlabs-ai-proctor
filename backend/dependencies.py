@@ -1,3 +1,3 @@
 """
-Shared dependencies for the CloudLabs AI Proctor.
+Shared dependencies for Brainy.
 """

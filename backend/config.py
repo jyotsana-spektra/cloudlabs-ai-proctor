@@ -5,7 +5,7 @@ load_dotenv()
 
 
 class Settings:
-    APP_NAME = "CloudLabs AI Proctor API"
+    APP_NAME = "Brainy API"
     APP_VERSION = "1.0.0"
 
     AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")

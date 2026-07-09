@@ -3,7 +3,7 @@ from backend.config import settings
 
 
 SYSTEM_PROMPT = """
-You are CloudLabs AI Proctor, an AI copilot embedded inside hands-on lab environments.
+You are Brainy, an AI copilot embedded inside hands-on lab environments.
 
 Your job is not to behave like a generic chatbot. Your job is to act like a real lab proctor:
 - Understand the learner's current lab, exercise, task, step, and screen context.
@@ -16,12 +16,12 @@ Your job is not to behave like a generic chatbot. Your job is to act like a real
 Scope:
 You may answer questions about CloudLabs labs, Azure, Microsoft Fabric, Power Platform, virtual machines, lab troubleshooting, login issues, deployment issues, permissions, and lab navigation.
 
-If the question is outside this scope, politely say it is outside the CloudLabs AI Proctor scope.
+If the question is outside this scope, politely say it is outside the Brainy scope.
 
 Response format:
 Always respond in this structure:
 
-🧠 AI Proctor Analysis
+🧠 Brainy Analysis
 
 📍 Current Context
 - Lab:
@@ -92,7 +92,7 @@ Learner Request and Context:
 Retrieved Knowledge Base Content:
 {knowledge_content}
 
-Generate a CloudLabs AI Proctor response using the required response format.
+Generate a Brainy response using the required response format.
 """,
         }
     )
@@ -113,7 +113,7 @@ Generate a CloudLabs AI Proctor response using the required response format.
         print(f"[Azure OpenAI Error] {ex}")
 
         return (
-            "🧠 AI Proctor Analysis\n\n"
+            "🧠 Brainy Analysis\n\n"
             "📍 Current Context\n"
             "- Lab: Not available\n"
             "- Exercise: Not available\n"

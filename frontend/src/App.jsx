@@ -24,7 +24,7 @@ function App() {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      text: "Hi 👋\n\nI'm CloudLabs AI Proctor. Tell me what issue you are facing, or use Screen Awareness to analyze where you are in the lab.",
+      text: "Hi 👋\n\nI'm Brainy. Tell me what issue you are facing, or use Screen Awareness to analyze where you are in the lab.",
       source: null,
       score: null,
       userQuestion: "",
@@ -201,7 +201,7 @@ Tell me:
       {!isOpen && (
         <button className="floating-launcher" onClick={() => setIsOpen(true)}>
           <span>🤖</span>
-          <strong>AI Proctor</strong>
+          <strong>Brainy</strong>
         </button>
       )}
 
@@ -211,8 +211,8 @@ Tell me:
             <div className="brand">
               <div className="brand-icon">🤖</div>
               <div>
-                <h1>CloudLabs</h1>
-                <h2>AI Proctor</h2>
+                <h1>Brainy</h1>
+                <h2>AI Lab Copilot</h2>
               </div>
             </div>
 
@@ -353,10 +353,8 @@ Tell me:
               <div className="title-wrap">
                 <div className="bot-logo">🤖</div>
                 <div>
-                  <h1>
-                    <span>CloudLabs</span> AI Proctor
-                  </h1>
-                  <p>Floating lab copilot powered by Azure OpenAI</p>
+                  <h1>Brainy</h1>
+                  <p>AI Lab Copilot</p>
                 </div>
               </div>
 
