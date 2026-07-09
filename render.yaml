@@ -1,0 +1,33 @@
+services:
+  # FastAPI backend, built from deployments/Dockerfile
+  - type: web
+    name: cloudlabs-ai-proctor-backend
+    env: docker
+    dockerfilePath: ./deployments/Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: AZURE_OPENAI_ENDPOINT
+        sync: false
+      - key: AZURE_OPENAI_API_KEY
+        sync: false
+      - key: AZURE_OPENAI_DEPLOYMENT_NAME
+        sync: false
+      - key: AZURE_OPENAI_API_VERSION
+        value: "2025-04-01-preview"
+
+  # Vite/React frontend, built and served as a static site
+  - type: web
+    name: cloudlabs-ai-proctor-frontend
+    env: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://cloudlabs-ai-proctor-backend.onrender.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
