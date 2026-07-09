@@ -35,6 +35,12 @@ function App() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Tracks the most recent substantive (non-canned-followup) question the
+  // learner asked. Used so generic follow-ups like "Still stuck" can carry
+  // the actual topic instead of sending a content-free sentence that the
+  // backend has nothing real to search on.
+  const [lastTopic, setLastTopic] = useState("");
+
   const quickPrompts = [
     { icon: "🖥️", text: "VM is not loading" },
     { icon: "👤", text: "I cannot login" },
@@ -84,11 +90,24 @@ Tell me:
 3. If I am on the wrong page, how should I recover?
 `;
 
+    setLastTopic(message);
     sendMessage(message);
   };
 
-  const sendMessage = async (messageText = input) => {
+  // isFollowUp = true for canned "did that work?" style replies that carry
+  // no topic of their own (e.g. "Still stuck"). These reuse lastTopic
+  // instead of overwriting it, and get flagged to the backend.
+  const sendMessage = async (messageText = input, isFollowUp = false) => {
     if (!messageText.trim() || loading) return;
+
+    const outgoingText =
+      isFollowUp && lastTopic
+        ? `Follow-up on previous issue: "${lastTopic}". ${messageText}`
+        : messageText;
+
+    if (!isFollowUp) {
+      setLastTopic(messageText);
+    }
 
     setMessages((prev) => [
       ...prev,
@@ -101,7 +120,7 @@ Tell me:
     try {
       const response = await API.post("/chat", {
         session_id: "frontend-user-1",
-        user_message: messageText,
+        user_message: outgoingText,
         lab_id: labContext.lab_id,
         lab_name: labContext.lab_name,
         exercise: labContext.exercise,
@@ -116,7 +135,7 @@ Tell me:
           text: response.data.answer,
           source: response.data.source,
           score: response.data.score,
-          userQuestion: messageText,
+          userQuestion: outgoingText,
           feedbackSent: false,
         },
       ]);
@@ -128,7 +147,7 @@ Tell me:
           text: "I could not connect to the backend. Please confirm the FastAPI backend is running and the frontend proxy is configured.",
           source: null,
           score: null,
-          userQuestion: messageText,
+          userQuestion: outgoingText,
           feedbackSent: false,
         },
       ]);
@@ -174,6 +193,7 @@ Tell me:
         feedbackSent: false,
       },
     ]);
+    setLastTopic("");
   };
 
   return (
@@ -394,7 +414,8 @@ Tell me:
                           <button
                             onClick={() =>
                               sendMessage(
-                                "I already waited 2-3 minutes but the issue is still happening."
+                                "I already waited 2-3 minutes but the issue is still happening.",
+                                true
                               )
                             }
                           >
@@ -424,7 +445,8 @@ Tell me:
                           <button
                             onClick={() =>
                               sendMessage(
-                                "Give me the next troubleshooting action based on my current lab context."
+                                "Give me the next troubleshooting action based on my current lab context.",
+                                true
                               )
                             }
                           >

@@ -47,6 +47,20 @@ app.include_router(chat_routes.router, prefix="/route-chat", tags=["Chat"])
 app.include_router(admin.router, prefix="/admin", tags=["Admin"])
 
 
+# --------------------------------------------------------------------------
+# Minimal per-session cache of the last successful KB result.
+# This lets low-signal follow-ups ("still stuck") re-use the previous
+# diagnosis's source content instead of triggering a fresh, unfocused
+# search that has nothing real to match against.
+#
+# NOTE: this is in-memory and will reset on backend restart / won't work
+# across multiple backend instances. If you already track per-session
+# state in session_service.py, move this dict (or equivalent) there so
+# it persists/scales the same way session history does.
+# --------------------------------------------------------------------------
+_last_kb_result_by_session: dict[str, dict] = {}
+
+
 @app.get("/")
 def root():
     return {
@@ -96,24 +110,31 @@ def chat(request: ChatRequest):
 
     question_type = classify_question(request.user_message)
 
-    contextual_query = f"""
-Lab Name: {request.lab_name}
-Exercise: {request.exercise}
-Task: {request.task}
-Step: {request.step}
-
-User Question:
-{request.user_message}
-"""
-
+    # IMPORTANT: search on the learner's RAW message only. Do not wrap it
+    # in the "Lab Name: / Task: / Step:" template before searching --
+    # those literal labels used to pollute keyword scoring on every single
+    # request. Structured lab/task/step context is passed separately below
+    # so it can be used as metadata matching instead of noisy free-text.
     kb_result = search_knowledge_base(
-        contextual_query,
+        request.user_message,
         question_type,
-        request.lab_id
+        request.lab_id,
+        request.task,
+        request.step,
     )
+
+    # If this message didn't carry enough real signal (e.g. a generic
+    # "still stuck" follow-up), fall back to the last successful KB result
+    # for this session instead of trusting a near-empty/unfocused search.
+    if kb_result.get("low_signal") and session_id in _last_kb_result_by_session:
+        kb_result = _last_kb_result_by_session[session_id]
+    elif kb_result.get("found"):
+        _last_kb_result_by_session[session_id] = kb_result
 
     history = get_session(session_id)
 
+    # The LLM still gets full structured context -- this part was fine,
+    # the bug was only ever in what got sent to the *search* step.
     ai_prompt = f"""
     Current Lab Context:
     Lab Name: {request.lab_name}
@@ -130,7 +151,6 @@ User Question:
         kb_result["content"],
         history
     )
-    
 
     add_message(session_id, "assistant", ai_answer)
 
@@ -160,6 +180,9 @@ User Question:
 def delete_session(session_id: str):
 
     clear_session(session_id)
+
+    if session_id in _last_kb_result_by_session:
+        del _last_kb_result_by_session[session_id]
 
     return {
         "message": f"Session '{session_id}' cleared successfully."
