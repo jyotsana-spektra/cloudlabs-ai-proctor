@@ -135,6 +135,7 @@ Tell me:
           text: response.data.answer,
           source: response.data.source,
           score: response.data.score,
+          questionType: response.data.question_type,
           userQuestion: outgoingText,
           feedbackSent: false,
         },
@@ -377,11 +378,13 @@ Tell me:
                   </div>
 
                   <div className={`chat-bubble ${message.role}`}>
-                    {message.role === "assistant" && index !== 0 && (
-                      <div className="trouble-card-title">
-                        ⚠️ AI Troubleshooting
-                      </div>
-                    )}
+                    {message.role === "assistant" &&
+                      index !== 0 &&
+                      message.questionType !== "greeting" && (
+                        <div className="trouble-card-title">
+                          ⚠️ AI Troubleshooting
+                        </div>
+                      )}
 
                     <p>{message.text}</p>
 

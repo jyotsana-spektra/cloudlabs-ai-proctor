@@ -54,6 +54,19 @@ Rules:
 - Do not tell the user to contact a human proctor unless escalation is truly needed.
 """
 
+CASUAL_SYSTEM_PROMPT = """
+You are Brainy, a friendly AI copilot embedded inside hands-on lab environments.
+
+The learner just sent a casual message (a greeting, thanks, or other small talk)
+with no lab issue or question in it.
+
+Reply the way a helpful human copilot would: warm, brief, natural language,
+1-2 sentences. Do NOT use the structured analysis template (no headings,
+no "Diagnosis"/"Recommended Actions"/"Escalation" sections, no emoji-headed
+sections). You may invite them to describe what they need help with, but keep
+it short and conversational.
+"""
+
 
 def _get_client():
     if not settings.AZURE_OPENAI_ENDPOINT or not settings.AZURE_OPENAI_API_KEY:
@@ -65,11 +78,11 @@ def _get_client():
     )
 
 
-def generate_response(user_message, knowledge_content, history=None):
+def generate_response(user_message, knowledge_content, history=None, casual=False):
     messages = [
         {
             "role": "system",
-            "content": SYSTEM_PROMPT,
+            "content": CASUAL_SYSTEM_PROMPT if casual else SYSTEM_PROMPT,
         }
     ]
 
@@ -82,10 +95,18 @@ def generate_response(user_message, knowledge_content, history=None):
                 }
             )
 
-    messages.append(
-        {
-            "role": "user",
-            "content": f"""
+    if casual:
+        messages.append(
+            {
+                "role": "user",
+                "content": user_message,
+            }
+        )
+    else:
+        messages.append(
+            {
+                "role": "user",
+                "content": f"""
 Learner Request and Context:
 {user_message}
 
@@ -94,8 +115,8 @@ Retrieved Knowledge Base Content:
 
 Generate a Brainy response using the required response format.
 """,
-        }
-    )
+            }
+        )
 
     try:
         client = _get_client()
@@ -111,6 +132,9 @@ Generate a Brainy response using the required response format.
 
     except Exception as ex:
         print(f"[Azure OpenAI Error] {ex}")
+
+        if casual:
+            return "Hi! I'm having trouble reaching the AI service right now, but I'm here \u2014 try again in a moment."
 
         return (
             "🧠 Brainy Analysis\n\n"

@@ -110,26 +110,39 @@ def chat(request: ChatRequest):
 
     question_type = classify_question(request.user_message)
 
-    # IMPORTANT: search on the learner's RAW message only. Do not wrap it
-    # in the "Lab Name: / Task: / Step:" template before searching --
-    # those literal labels used to pollute keyword scoring on every single
-    # request. Structured lab/task/step context is passed separately below
-    # so it can be used as metadata matching instead of noisy free-text.
-    kb_result = search_knowledge_base(
-        request.user_message,
-        question_type,
-        request.lab_id,
-        request.task,
-        request.step,
-    )
+    # Casual chit-chat (greetings/thanks/acknowledgements) shouldn't touch
+    # the knowledge base at all, and must NEVER reuse a previous session's
+    # cached KB result -- that produced replies like "hi" coming back with
+    # an unrelated login-issues.md source from an earlier question.
+    if question_type == "greeting":
+        kb_result = {
+            "found": False,
+            "source": None,
+            "content": "",
+            "score": 0,
+            "low_signal": True,
+        }
+    else:
+        # IMPORTANT: search on the learner's RAW message only. Do not wrap it
+        # in the "Lab Name: / Task: / Step:" template before searching --
+        # those literal labels used to pollute keyword scoring on every single
+        # request. Structured lab/task/step context is passed separately below
+        # so it can be used as metadata matching instead of noisy free-text.
+        kb_result = search_knowledge_base(
+            request.user_message,
+            question_type,
+            request.lab_id,
+            request.task,
+            request.step,
+        )
 
-    # If this message didn't carry enough real signal (e.g. a generic
-    # "still stuck" follow-up), fall back to the last successful KB result
-    # for this session instead of trusting a near-empty/unfocused search.
-    if kb_result.get("low_signal") and session_id in _last_kb_result_by_session:
-        kb_result = _last_kb_result_by_session[session_id]
-    elif kb_result.get("found"):
-        _last_kb_result_by_session[session_id] = kb_result
+        # If this message didn't carry enough real signal (e.g. a generic
+        # "still stuck" follow-up), fall back to the last successful KB result
+        # for this session instead of trusting a near-empty/unfocused search.
+        if kb_result.get("low_signal") and session_id in _last_kb_result_by_session:
+            kb_result = _last_kb_result_by_session[session_id]
+        elif kb_result.get("found"):
+            _last_kb_result_by_session[session_id] = kb_result
 
     history = get_session(session_id)
 
@@ -149,7 +162,8 @@ def chat(request: ChatRequest):
     ai_answer = generate_response(
         ai_prompt,
         kb_result["content"],
-        history
+        history,
+        casual=(question_type == "greeting"),
     )
 
     add_message(session_id, "assistant", ai_answer)
