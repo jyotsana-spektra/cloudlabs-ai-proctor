@@ -92,6 +92,7 @@ body {
 .brand h2 {
   margin: 0;
   line-height: 1.1;
+  color: #f8fafc;
 }
 
 .brand h1 {
@@ -267,6 +268,7 @@ body {
 .title-wrap h1 {
   margin: 0;
   font-size: 28px;
+  color: #f8fafc;
 }
 
 .title-wrap h1 span {
