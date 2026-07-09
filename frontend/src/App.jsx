@@ -380,7 +380,8 @@ Tell me:
                   <div className={`chat-bubble ${message.role}`}>
                     {message.role === "assistant" &&
                       index !== 0 &&
-                      message.questionType !== "greeting" && (
+                      message.questionType === "troubleshooting" &&
+                      message.source && (
                         <div className="trouble-card-title">
                           ⚠️ AI Troubleshooting
                         </div>
@@ -388,7 +389,9 @@ Tell me:
 
                     <p>{message.text}</p>
 
-                    {message.role === "assistant" && message.source && (
+                    {message.role === "assistant" &&
+                      message.questionType === "troubleshooting" &&
+                      message.source && (
                       <div className="trouble-card">
                         <div className="card-metrics">
                           <div>
