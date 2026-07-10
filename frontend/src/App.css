@@ -27,6 +27,9 @@ body,
   --surface-alt: #f3f6fb;
   --border-soft: rgba(22, 40, 65, 0.14);
   --green: #22c55e;
+  --sidebar-bg: #eaf2ff;
+  --sidebar-card: #ffffff;
+  --sidebar-border: #cbdffb;
 }
 
 body {
@@ -52,6 +55,17 @@ body {
   font-size: 16px;
   cursor: pointer;
   box-shadow: 0 18px 50px rgba(29, 78, 216, 0.35);
+  animation: launcherPop 0.35s ease, launcherFloat 2.6s ease-in-out 0.35s infinite;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.floating-launcher:hover {
+  transform: scale(1.06);
+  box-shadow: 0 22px 60px rgba(29, 78, 216, 0.45);
+}
+
+.floating-launcher:active {
+  transform: scale(0.97);
 }
 
 .floating-launcher img {
@@ -74,6 +88,7 @@ body {
   border: 1px solid var(--border-soft);
   box-shadow: 0 30px 80px rgba(16, 26, 38, 0.25);
   z-index: 9999;
+  animation: popScaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .sidebar {
@@ -81,8 +96,8 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   padding: 20px;
-  border-right: 1px solid var(--navy-700);
-  background: var(--navy-800);
+  border-right: 1px solid var(--sidebar-border);
+  background: var(--sidebar-bg);
 }
 
 .cloudlabs-badge {
@@ -90,7 +105,8 @@ body {
   align-items: center;
   margin-bottom: 18px;
   padding-bottom: 16px;
-  border-bottom: 1px solid var(--navy-700);
+  border-bottom: 1px solid var(--sidebar-border);
+  animation: fadeSlideIn 0.4s ease;
 }
 
 .cloudlabs-badge img {
@@ -110,12 +126,14 @@ body {
   width: 54px;
   height: 54px;
   border-radius: 18px;
-  background: var(--navy-700);
+  background: var(--sidebar-card);
+  border: 1px solid var(--sidebar-border);
   display: grid;
   place-items: center;
   font-size: 26px;
   padding: 8px;
-  box-shadow: 0 0 30px rgba(124, 58, 237, 0.25);
+  box-shadow: 0 0 24px rgba(47, 111, 237, 0.2);
+  animation: logoFloat 3s ease-in-out infinite;
 }
 
 .brand-icon img,
@@ -129,7 +147,7 @@ body {
 .brand h2 {
   margin: 0;
   line-height: 1.1;
-  color: #ffffff;
+  color: var(--text-dark);
 }
 
 .brand h1 {
@@ -138,16 +156,24 @@ body {
 
 .brand h2 {
   font-size: 24px;
-  color: var(--blue-500);
+  color: var(--blue-600);
 }
 
 .status-card,
 .panel-card {
-  background: var(--navy-700);
-  border: 1px solid var(--navy-600);
+  background: var(--sidebar-card);
+  border: 1px solid var(--sidebar-border);
   border-radius: 16px;
   padding: 16px;
   margin-bottom: 14px;
+  animation: fadeSlideIn 0.45s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.status-card:hover,
+.panel-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(47, 111, 237, 0.12);
 }
 
 .status-card {
@@ -158,13 +184,13 @@ body {
 
 .status-card strong {
   margin-left: 8px;
-  color: #ffffff;
+  color: var(--text-dark);
 }
 
 .status-card p,
 .small-text {
   margin: 8px 0 0 28px;
-  color: #9fb0c7;
+  color: var(--text-muted);
   font-size: 13px;
 }
 
@@ -174,7 +200,7 @@ body {
   background: var(--green);
   display: inline-block;
   border-radius: 50%;
-  box-shadow: 0 0 18px var(--green);
+  animation: pulseDot 2s infinite;
 }
 
 .wave-icon {
@@ -191,7 +217,7 @@ body {
 .panel-card h3 {
   margin: 0 0 14px;
   font-size: 14px;
-  color: #ffffff;
+  color: var(--text-dark);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
@@ -199,7 +225,7 @@ body {
 .panel-card label {
   display: block;
   margin: 10px 0 6px;
-  color: #9fb0c7;
+  color: var(--text-muted);
   font-size: 12px;
   font-weight: 700;
 }
@@ -209,26 +235,28 @@ body {
   margin-bottom: 8px;
   padding: 10px 12px;
   border-radius: 10px;
-  border: 1px solid var(--navy-600);
-  background: var(--navy-800);
-  color: #ffffff;
+  border: 1px solid var(--sidebar-border);
+  background: #ffffff;
+  color: var(--text-dark);
   outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .context-input:focus {
   border-color: var(--blue-500);
+  box-shadow: 0 0 0 3px rgba(79, 140, 247, 0.18);
 }
 
 .progress-title {
   display: flex;
   justify-content: space-between;
   margin-bottom: 12px;
-  color: #ffffff;
+  color: var(--text-dark);
 }
 
 .progress-bar {
   height: 10px;
-  background: var(--navy-600);
+  background: var(--blue-100);
   border-radius: 999px;
   overflow: hidden;
 }
@@ -238,6 +266,7 @@ body {
   height: 100%;
   background: linear-gradient(90deg, var(--blue-600), var(--purple-600));
   border-radius: 999px;
+  animation: progressShine 2.5s ease-in-out infinite;
 }
 
 .quick-help button {
@@ -245,21 +274,26 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: var(--navy-800);
-  border: 1px solid var(--navy-600);
-  color: #ffffff;
+  background: var(--sidebar-card);
+  border: 1px solid var(--sidebar-border);
+  color: var(--text-dark);
   padding: 12px 14px;
   border-radius: 10px;
   margin-bottom: 7px;
   cursor: pointer;
   text-align: left;
-  transition: 0.2s;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .quick-help button:hover {
   border-color: var(--blue-500);
-  transform: translateX(4px);
-  background: var(--navy-700);
+  transform: translateX(4px) scale(1.01);
+  background: var(--blue-100);
+  box-shadow: 0 6px 16px rgba(47, 111, 237, 0.15);
+}
+
+.quick-help button:active {
+  transform: translateX(2px) scale(0.99);
 }
 
 .clear-chat {
@@ -267,17 +301,19 @@ body {
   margin-top: 10px;
   padding: 14px;
   border-radius: 12px;
-  border: 1px solid var(--navy-600);
-  color: #ffffff;
+  border: 1px solid var(--sidebar-border);
+  color: var(--text-dark);
   background: transparent;
   cursor: pointer;
   font-size: 15px;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .clear-chat:hover {
-  background: var(--navy-700);
+  background: #fee2e2;
   border-color: #dc2626;
-  color: #f87171;
+  color: #b91c1c;
+  transform: translateY(-1px);
 }
 
 .main-panel {
@@ -343,7 +379,7 @@ body {
   height: 10px;
   background: #22c55e;
   border-radius: 50%;
-  box-shadow: 0 0 14px #22c55e;
+  animation: pulseDot 2s infinite;
 }
 
 .close-widget {
@@ -354,6 +390,12 @@ body {
   background: #ffffff;
   color: var(--text-dark);
   cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.close-widget:hover {
+  background: var(--surface-alt);
+  transform: rotate(90deg);
 }
 
 .chat-area {
@@ -371,6 +413,7 @@ body {
   display: flex;
   gap: 14px;
   margin-bottom: 24px;
+  animation: fadeSlideIn 0.35s ease;
 }
 
 .chat-row.user {
@@ -387,6 +430,11 @@ body {
   font-size: 24px;
   background: var(--surface-alt);
   border: 1px solid var(--border-soft);
+  transition: transform 0.2s ease;
+}
+
+.chat-row:hover .chat-avatar {
+  transform: scale(1.06);
 }
 
 .chat-avatar.assistant {
@@ -488,11 +536,18 @@ body {
   background: #ffffff;
   color: var(--text-dark);
   cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .action-grid button:hover {
   border-color: var(--blue-500);
   background: var(--blue-100);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(47, 111, 237, 0.15);
+}
+
+.action-grid button:active {
+  transform: translateY(0);
 }
 
 .feedback-row {
@@ -509,10 +564,16 @@ body {
   color: var(--text-dark);
   border: 1px solid var(--border-soft);
   cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.2s ease;
 }
 
 .feedback-row button:hover {
   border-color: var(--blue-500);
+  transform: translateY(-1px);
+}
+
+.feedback-row button:active {
+  transform: translateY(0) scale(0.97);
 }
 
 .copy-btn {
@@ -525,6 +586,7 @@ body {
   background: rgba(34, 197, 94, 0.1);
   padding: 10px 14px;
   border-radius: 10px;
+  animation: fadeSlideIn 0.3s ease;
 }
 
 .typing {
@@ -594,6 +656,16 @@ body {
   color: white;
   font-size: 24px;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-area button:hover:not(:disabled) {
+  transform: scale(1.06);
+  box-shadow: 0 10px 24px rgba(29, 78, 216, 0.3);
+}
+
+.input-area button:active:not(:disabled) {
+  transform: scale(0.96);
 }
 
 .input-area button:disabled {
@@ -611,11 +683,96 @@ body {
   color: white;
   font-weight: 700;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .analyze-btn:hover {
-  transform: translateY(-1px);
+  transform: translateY(-1px) scale(1.01);
   box-shadow: 0 10px 24px rgba(29, 78, 216, 0.3);
+}
+
+.analyze-btn:active {
+  transform: translateY(0) scale(0.99);
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popScaleIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(24px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+@keyframes launcherPop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes launcherFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes logoFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes pulseDot {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
+  }
+
+  70% {
+    box-shadow: 0 0 0 9px rgba(34, 197, 94, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+@keyframes progressShine {
+  0%, 100% {
+    filter: brightness(1);
+  }
+
+  50% {
+    filter: brightness(1.25);
+  }
 }
 
 * {
