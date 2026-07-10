@@ -201,7 +201,7 @@ Tell me:
     <>
       {!isOpen && (
         <button className="floating-launcher" onClick={() => setIsOpen(true)}>
-          <span>🤖</span>
+          <img src="/cloudlabs-icon.svg" alt="CloudLabs" />
           <strong>Brainy</strong>
         </button>
       )}
@@ -209,8 +209,14 @@ Tell me:
       {isOpen && (
         <div className="widget-shell">
           <aside className="sidebar">
+            <div className="cloudlabs-badge">
+              <img src="/cloudlabs-logo.svg" alt="CloudLabs" />
+            </div>
+
             <div className="brand">
-              <div className="brand-icon">🤖</div>
+              <div className="brand-icon">
+                <img src="/cloudlabs-icon.svg" alt="CloudLabs" />
+              </div>
               <div>
                 <h1>Brainy</h1>
                 <h2>AI Lab Copilot</h2>
@@ -352,7 +358,9 @@ Tell me:
           <main className="main-panel">
             <header className="topbar">
               <div className="title-wrap">
-                <div className="bot-logo">🤖</div>
+                <div className="bot-logo">
+                  <img src="/cloudlabs-icon.svg" alt="CloudLabs" />
+                </div>
                 <div>
                   <h1>Brainy</h1>
                   <p>AI Lab Copilot</p>
