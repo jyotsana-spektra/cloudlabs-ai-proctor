@@ -516,6 +516,25 @@ body {
   color: var(--purple-600);
 }
 
+.web-search-card .card-metrics {
+  grid-template-columns: 1fr;
+  margin-bottom: 10px;
+}
+
+.web-source-list {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+}
+
+.web-source-list li {
+  margin-bottom: 6px;
+}
+
+.web-source-list a {
+  color: var(--blue-700);
+}
+
 .recommended {
   color: var(--text-dark);
   margin-bottom: 12px;

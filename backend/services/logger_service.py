@@ -12,7 +12,8 @@ def log_chat_event(
     question_type: str,
     source: str | None,
     score: int,
-    lab_context: dict
+    lab_context: dict,
+    web_search_used: bool = False
 ) -> None:
     events_path = Path(settings.ANALYTICS_EVENTS_PATH)
     events_path.parent.mkdir(parents=True, exist_ok=True)
@@ -34,7 +35,8 @@ def log_chat_event(
         "ai_answer": ai_answer,
         "source": source,
         "score": score,
-        "lab_context": lab_context
+        "lab_context": lab_context,
+        "web_search_used": web_search_used
     })
 
     with open(events_path, "w", encoding="utf-8") as file:

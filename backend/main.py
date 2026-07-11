@@ -7,6 +7,7 @@ from backend.models import ChatRequest
 from backend.services.classifier_service import classify_question
 from backend.services.search_service import search_knowledge_base
 from backend.services.ai_service import generate_response
+from backend.services.web_search_service import search_web
 from backend.services.session_service import (
     add_message,
     get_session,
@@ -146,6 +147,20 @@ def chat(request: ChatRequest):
 
     history = get_session(session_id)
 
+    # If the knowledge base has no strong match for a real lab/troubleshooting
+    # question, fall back to a best-effort general web search so the learner
+    # still gets useful guidance instead of a dead end. Never blocks/breaks
+    # the chat response if the search fails -- search_web() always returns
+    # a plain list, empty on any error.
+    web_results = []
+
+    if (
+        question_type in ("troubleshooting", "lab_help")
+        and not kb_result.get("found")
+        and not kb_result.get("low_signal")
+    ):
+        web_results = search_web(request.user_message)
+
     # The LLM still gets full structured context -- this part was fine,
     # the bug was only ever in what got sent to the *search* step.
     ai_prompt = f"""
@@ -164,6 +179,7 @@ def chat(request: ChatRequest):
         kb_result["content"],
         history,
         casual=(question_type == "greeting"),
+        web_results=web_results,
     )
 
     add_message(session_id, "assistant", ai_answer)
@@ -175,7 +191,8 @@ def chat(request: ChatRequest):
         question_type=question_type,
         source=kb_result["source"],
         score=kb_result.get("score", 0),
-        lab_context=lab_context
+        lab_context=lab_context,
+        web_search_used=bool(web_results),
     )
 
     return {
@@ -186,7 +203,9 @@ def chat(request: ChatRequest):
         "found": kb_result["found"],
         "score": kb_result.get("score", 0),
         "history": get_session(session_id),
-        "lab_context": lab_context
+        "lab_context": lab_context,
+        "web_search_used": bool(web_results),
+        "web_sources": web_results,
     }
 
 

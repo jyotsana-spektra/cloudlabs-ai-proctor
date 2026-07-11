@@ -17,5 +17,10 @@ class Settings:
     ANALYTICS_EVENTS_PATH = "analytics/events.json"
     ANALYTICS_FEEDBACK_PATH = "analytics/feedback.json"
 
+    # Internet fallback used when a troubleshooting/lab question has no
+    # strong match in the local knowledge base.
+    ENABLE_WEB_SEARCH = os.getenv("ENABLE_WEB_SEARCH", "true").lower() == "true"
+    WEB_SEARCH_TIMEOUT = float(os.getenv("WEB_SEARCH_TIMEOUT", "6"))
+
 
 settings = Settings()

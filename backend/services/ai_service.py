@@ -24,6 +24,10 @@ Guidelines:
   not a rigid multi-section form.
 - Use the retrieved knowledge base content whenever it's relevant; don't
   force it into the answer if the question doesn't need it.
+- If the knowledge base didn't cover the issue but web search results were
+  provided, use them to give general troubleshooting guidance and say
+  plainly that this comes from a general web search rather than the
+  official lab guide, since it may not match the exact lab environment.
 - Only suggest escalating to a human proctor if the issue truly can't be
   resolved with the information available.
 
@@ -64,7 +68,13 @@ def _get_client():
     )
 
 
-def generate_response(user_message, knowledge_content, history=None, casual=False):
+def generate_response(
+    user_message,
+    knowledge_content,
+    history=None,
+    casual=False,
+    web_results=None,
+):
     messages = [
         {
             "role": "system",
@@ -89,6 +99,18 @@ def generate_response(user_message, knowledge_content, history=None, casual=Fals
             }
         )
     else:
+        web_section = ""
+        if web_results:
+            formatted_results = "\n".join(
+                f"- {item['title']}: {item['snippet']} ({item['url']})"
+                for item in web_results
+            )
+            web_section = f"""
+Web Search Results (general internet guidance, not the official lab guide --
+only use if the knowledge base content above wasn't enough, and say so):
+{formatted_results}
+"""
+
         messages.append(
             {
                 "role": "user",
@@ -98,7 +120,7 @@ Learner Request and Context:
 
 Retrieved Knowledge Base Content (use only if relevant to the question):
 {knowledge_content}
-
+{web_section}
 Answer the learner naturally, following the system instructions above.
 """,
             }

@@ -1,6 +1,8 @@
+import re
 from pathlib import Path
 
 from backend.utils.chunking import chunk_text
+from backend.utils.helpers import extract_lab_references
 
 
 # Generic words that show up in almost every lab-guide/troubleshooting doc.
@@ -28,7 +30,127 @@ def _extract_keywords(text: str) -> list[str]:
         w.strip().lower().strip(".,:;!?()[]{}\"'")
         for w in text.replace("\n", " ").split()
     ]
-    return [w for w in words if len(w) > 2 and w not in STOPWORDS]
+    # Numeric tokens (e.g. the "1" in "lab 1") and known priority terms
+    # (e.g. "vm") must be kept even though they're short -- they're exactly
+    # what tells us WHICH lab/task/step the learner means, or what specific
+    # technology/issue they're hitting. Everything else still needs len > 2
+    # to avoid noise.
+    return [
+        w for w in words
+        if w and w not in STOPWORDS
+        and (len(w) > 2 or w.isdigit() or w in PRIORITY_KEYWORDS)
+    ]
+
+
+def _file_matches_number(file_stem: str, number: str) -> bool:
+    """
+    Matches numbered lab-guide filenames -- e.g. "lab3", "lab-3",
+    "exercise3", "03-delta-lake", "3-delta-lake" -- against a lab/exercise
+    number the learner mentioned in free text ("lab 3", "exercise 3").
+    """
+    stem = file_stem.lower()
+    padded = number.zfill(2)
+
+    patterns = [
+        rf"^lab-?0*{number}$",
+        rf"^exercise-?0*{number}$",
+        rf"^0*{number}[-_]",
+        rf"^{padded}[-_]",
+    ]
+    return any(re.match(pattern, stem) for pattern in patterns)
+
+
+def _score_chunk(
+    chunk_lower: str,
+    file_lower: str,
+    file_stem: str,
+    keywords: list[str],
+    references: dict,
+    lab_id: str | None,
+    task: str | None,
+    step: str | None,
+) -> int:
+    score = 0
+
+    for keyword in keywords:
+        if keyword in chunk_lower:
+            score += 1
+        if keyword in file_lower:
+            score += 1
+
+    for priority in PRIORITY_KEYWORDS:
+        if priority in keywords and priority in chunk_lower:
+            score += 2
+
+    # Structured metadata match -- these come from actual session/lab
+    # context, not from parsing question text, so they can't be polluted
+    # by template labels.
+    if task and task.lower() in file_lower:
+        score += 3
+    if step and step.lower() in chunk_lower:
+        score += 2
+    if lab_id and lab_id.lower() in file_lower:
+        score += 3
+
+    # Numbered references parsed from the learner's raw message (e.g.
+    # "lab 1"/"exercise 1" -> lab1.md, 01-lakehouse.md). Weighted heavily
+    # since a filename match on the exact lab/exercise number is a very
+    # strong signal of relevance.
+    lab_number = references.get("lab") or references.get("exercise")
+    if lab_number and _file_matches_number(file_stem, lab_number):
+        score += 5
+    if references.get("task") and references["task"] in chunk_lower:
+        score += 2
+    if references.get("step") and references["step"] in chunk_lower:
+        score += 2
+
+    return score
+
+
+def _search_folders(
+    folders: list[Path],
+    keywords: list[str],
+    references: dict,
+    lab_id: str | None,
+    task: str | None,
+    step: str | None,
+) -> tuple[Path | None, int, str]:
+    best_match = None
+    best_score = 0
+    best_chunk = ""
+
+    for folder in folders:
+        if not folder.exists():
+            continue
+
+        for md_file in folder.rglob("*.md"):
+            try:
+                content = md_file.read_text(encoding="utf-8", errors="ignore")
+                chunks = chunk_text(content)
+                file_lower = str(md_file).lower()
+                file_stem = md_file.stem.lower()
+
+                for chunk in chunks:
+                    score = _score_chunk(
+                        chunk.lower(),
+                        file_lower,
+                        file_stem,
+                        keywords,
+                        references,
+                        lab_id,
+                        task,
+                        step,
+                    )
+
+                    if score > best_score:
+                        best_score = score
+                        best_match = md_file
+                        best_chunk = chunk
+
+            except Exception:
+                continue
+
+    return best_match, best_score, best_chunk
 
 
 def search_knowledge_base(
@@ -47,18 +169,6 @@ def search_knowledge_base(
     which are matched separately as structured metadata.
     """
     kb_path = Path("knowledge-base")
-
-    folders_to_search = []
-
-    if lab_id:
-        folders_to_search.append(kb_path / "labguides" / lab_id)
-
-    folders_to_search.extend([
-        kb_path / "labguides",
-        kb_path / "troubleshooting",
-        kb_path / "known-issues",
-        kb_path / "faqs",
-    ])
 
     keywords = _extract_keywords(question)
 
@@ -81,51 +191,46 @@ def search_knowledge_base(
             "low_signal": True,
         }
 
-    best_match = None
-    best_score = 0
-    best_chunk = ""
+    # Pull explicit "lab 1" / "exercise 2" / "task 3" / "step 4" style
+    # references straight out of the learner's own message. This works even
+    # when the caller didn't pass structured lab_id/task/step (or the
+    # frontend only sent generic placeholder values), and lets us pinpoint
+    # numbered lab-guide files (lab3.md, exercise2.md, 03-delta-lake.md...).
+    references = extract_lab_references(question)
 
-    for folder in folders_to_search:
-        if not folder.exists():
-            continue
+    # If we know which workshop the learner is in, search that folder
+    # FIRST and in isolation. This is what actually resolves "lab 1" to
+    # the right file: without scoping, a same-numbered file in a totally
+    # different workshop (e.g. Fabric's Exercise-1.md) can outscore the
+    # intended match just by having more matching words in its body text.
+    if lab_id:
+        lab_folder = kb_path / "labguides" / lab_id
+        best_match, best_score, best_chunk = _search_folders(
+            [lab_folder], keywords, references, lab_id, task, step
+        )
 
-        for md_file in folder.rglob("*.md"):
-            try:
-                content = md_file.read_text(encoding="utf-8", errors="ignore")
-                chunks = chunk_text(content)
-                file_lower = str(md_file).lower()
+        if best_match and best_score >= 3:
+            return {
+                "found": True,
+                "source": str(best_match),
+                "content": best_chunk,
+                "score": best_score,
+                "low_signal": False,
+            }
 
-                for chunk in chunks:
-                    chunk_lower = chunk.lower()
-                    score = 0
+    # Fall back to a broad search across the whole knowledge base -- no
+    # lab_id was given, the lab_id folder doesn't exist, or nothing strong
+    # enough was found scoped to it.
+    all_folders = [
+        kb_path / "labguides",
+        kb_path / "troubleshooting",
+        kb_path / "known-issues",
+        kb_path / "faqs",
+    ]
 
-                    for keyword in keywords:
-                        if keyword in chunk_lower:
-                            score += 1
-                        if keyword in file_lower:
-                            score += 1
-
-                    for priority in PRIORITY_KEYWORDS:
-                        if priority in keywords and priority in chunk_lower:
-                            score += 2
-
-                    # Structured metadata match -- these come from actual
-                    # session/lab context, not from parsing question text,
-                    # so they can't be polluted by template labels.
-                    if task and task.lower() in file_lower:
-                        score += 3
-                    if step and step.lower() in chunk_lower:
-                        score += 2
-                    if lab_id and lab_id.lower() in file_lower:
-                        score += 3
-
-                    if score > best_score:
-                        best_score = score
-                        best_match = md_file
-                        best_chunk = chunk
-
-            except Exception:
-                continue
+    best_match, best_score, best_chunk = _search_folders(
+        all_folders, keywords, references, lab_id, task, step
+    )
 
     if best_match and best_score >= 3:
         return {

@@ -7,6 +7,8 @@ function App() {
 
   const [isOpen, setIsOpen] = useState(true);
 
+  const [availableLabs, setAvailableLabs] = useState([]);
+
   const [labContext, setLabContext] = useState({
     lab_id: "current-lab",
     lab_name: "Current CloudLabs Lab",
@@ -52,6 +54,22 @@ function App() {
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
+
+  // Load the list of lab-guide workshops from the knowledge base so the
+  // learner can tell Brainy which workshop they're currently in. This is
+  // what scopes/boosts knowledge-base search to the right lab guide.
+  useEffect(() => {
+    const loadLabs = async () => {
+      try {
+        const response = await API.get("/admin/labs");
+        setAvailableLabs(response.data.labs || []);
+      } catch {
+        setAvailableLabs([]);
+      }
+    };
+
+    loadLabs();
+  }, []);
 
   const updateContext = (field, value) => {
     setLabContext((prev) => ({
@@ -138,6 +156,8 @@ Tell me:
           questionType: response.data.question_type,
           userQuestion: outgoingText,
           feedbackSent: false,
+          webSearchUsed: response.data.web_search_used,
+          webSources: response.data.web_sources,
         },
       ]);
     } catch {
@@ -234,6 +254,20 @@ Tell me:
 
             <div className="panel-card">
               <h3>Current Lab Context</h3>
+
+              <label>Workshop / Lab Guide</label>
+              <select
+                className="context-input"
+                value={labContext.lab_id}
+                onChange={(e) => updateContext("lab_id", e.target.value)}
+              >
+                <option value="current-lab">Select a workshop...</option>
+                {availableLabs.map((lab) => (
+                  <option key={lab.id} value={lab.id}>
+                    {lab.label}
+                  </option>
+                ))}
+              </select>
 
               <label>Lab Name</label>
               <input
@@ -396,6 +430,29 @@ Tell me:
                       )}
 
                     <p>{message.text}</p>
+
+                    {message.role === "assistant" &&
+                      message.webSearchUsed &&
+                      message.webSources?.length > 0 && (
+                      <div className="trouble-card web-search-card">
+                        <div className="card-metrics">
+                          <div>
+                            <h4>🌐 Source</h4>
+                            <span>General web search (not the official lab guide)</span>
+                          </div>
+                        </div>
+
+                        <ul className="web-source-list">
+                          {message.webSources.map((item) => (
+                            <li key={item.url}>
+                              <a href={item.url} target="_blank" rel="noreferrer">
+                                {item.title}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
 
                     {message.role === "assistant" &&
                       message.questionType === "troubleshooting" &&
