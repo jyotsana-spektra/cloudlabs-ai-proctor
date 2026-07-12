@@ -1,1 +1,61 @@
-# Lab 8
+# Lab 07 - Azure Monitor
+
+## Estimated Duration: 35 Minutes
+
+## Overview
+ 
+In this lab, you will configure Azure Monitor to track the performance of a Windows Server virtual machine running in Azure. By collecting and analyzing telemetry data, you will gain insights into system health and resource utilization. Specifically, you will monitor the VM’s CPU usage, adjust the time range to view recent activity, and interpret the results to identify performance trends.
+
+## Lab Objectives
+
+You will be able to complete the following tasks:
+
+- Task 1: Monitor VM CPU Performance with Azure Monitor
+
+## Task 1: Monitor VM CPU Performance with Azure Monitor
+
+In this task, you will use Azure Monitor to track CPU utilization for a specific virtual machine, adjust the time range to the last 30 minutes, and review performance trends to identify potential issues proactively.
+
+1. Navigate back to **Azure Portal** in your **Lab VM**. Click on the **Hamburger menu (1)** icon at the upper left corner of the **Azure portal** and click on **All services (2)**.
+
+   ![](../instructions/images/Lab3-00.png)
+
+1. On the **All services** blade, search for **Monitor (1)** and select **Monitor (2)** from the results.
+
+   ![](../instructions/images/Lab6-00.png)
+
+1. From the left navigation pane, select **Metrics**.
+
+   ![](../instructions/images/L7T1S3.png)
+
+1. In the **Select a scope** pane, follow the steps below:
+ 
+   - **Resource types:** Select **Virtual machines (1)** from the drop-down.
+
+   - **Locations:** Select **All locations (2)**.
+    
+   - **Scope:** Select **DEMOLABVM01 (3)** virtual machine.
+
+   - Click **Apply (4)**.
+
+     ![Azure Monitor metric adding scope](images/Lab6-06.png) 
+
+1. In the **Metric** box, type **CPU (1)** and select **Percentage CPU (2)** from the drop-down menu.
+
+    ![Azure Monitor metric cpu](images/Lab6-02.png)
+
+1. In the top-right pane, click **Local Time: Last 24 hours (Automatic - 5 minutes) (1)**, change the time range to **Last 30 minutes (2)**, and click **Apply (3)**.
+
+    ![](../instructions/images/Lab6-03.png)
+
+1. Note how the CPU utilization changed during the past 30 minutes. You can now close the Monitor - Metrics blade.
+
+    ![Azure Monitor metric review](../instructions/images/L7T1S7.png)
+
+## Summary
+
+In this lab, you have completed the following:
+
+- Monitored VM CPU performance using Azure Monitor.
+
+## Congratulations, you have successfully completed the Hands-on lab.
