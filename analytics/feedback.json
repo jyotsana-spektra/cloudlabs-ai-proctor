@@ -5,5 +5,33 @@
     "user_message": "VM is not loading",
     "answer": "To troubleshoot the VM not loading issue in CloudLabs, please try the following steps:\n\n1. Clear your browser cache and cookies.\n2. Restart the browser and try loading the VM again.\n3. Try accessing the VM using a different browser.\n4. Ensure your internet connection is stable.\n\nIf the issue persists after these steps, please provide:\n\n- Browser name and version\n- Operating system\n- A screenshot of the issue\n\nThis information will help further diagnose the problem.",
     "rating": 1
+  },
+  {
+    "timestamp": "2026-07-12T15:29:59.856747",
+    "session_id": "test-session",
+    "user_message": "VM is not loading",
+    "answer": "Wait a few minutes.",
+    "rating": 1
+  },
+  {
+    "timestamp": "2026-07-12T15:34:31.300937",
+    "session_id": "test-session",
+    "user_message": "VM is not loading",
+    "answer": "Wait a few minutes.",
+    "rating": 1
+  },
+  {
+    "timestamp": "2026-07-12T15:36:49.552273",
+    "session_id": "test-session",
+    "user_message": "VM is not loading",
+    "answer": "Wait a few minutes.",
+    "rating": 1
+  },
+  {
+    "timestamp": "2026-07-12T15:43:43.007745",
+    "session_id": "test-session",
+    "user_message": "VM is not loading",
+    "answer": "Wait a few minutes.",
+    "rating": 1
   }
 ]

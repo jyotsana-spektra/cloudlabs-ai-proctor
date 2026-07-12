@@ -10,4 +10,8 @@ def test_lab_question():
 
 
 def test_general_question():
-    assert classify_question("Hello") == "general"
+    assert classify_question("Hello") == "greeting"
+
+
+def test_vague_help_request():
+    assert classify_question("i am in azure vm and compute lab and i need help") == "lab_help"

@@ -161,14 +161,52 @@ def chat(request: ChatRequest):
     ):
         web_results = search_web(request.user_message)
 
-    # The LLM still gets full structured context -- this part was fine,
-    # the bug was only ever in what got sent to the *search* step.
+    # Only tell the LLM about lab context fields the learner/UI actually
+    # provided. The frontend's sidebar pre-fills these fields with default
+    # placeholder text ("current-lab" / "Current CloudLabs Lab" /
+    # "Exercise 1" / "Task 1" / "Step 1") even when the learner hasn't
+    # touched them, so a plain empty-string/None check isn't enough --
+    # those exact defaults must be treated as "not provided" too, otherwise
+    # the model treats the placeholder as a real fact and confidently
+    # assumes/hallucinates a specific exercise/task/step.
+    PLACEHOLDER_LAB_CONTEXT = {
+        "lab_id": "current-lab",
+        "lab_name": "current cloudlabs lab",
+        "exercise": "exercise 1",
+        "task": "task 1",
+        "step": "step 1",
+    }
+
+    def _real_value(field: str, value: str | None) -> str | None:
+        if not value:
+            return None
+        if value.strip().lower() == PLACEHOLDER_LAB_CONTEXT[field]:
+            return None
+        return value
+
+    real_lab_name = _real_value("lab_name", request.lab_name)
+    real_exercise = _real_value("exercise", request.exercise)
+    real_task = _real_value("task", request.task)
+    real_step = _real_value("step", request.step)
+
+    context_lines = [
+        f"Lab Name: {real_lab_name}" if real_lab_name else None,
+        f"Exercise: {real_exercise}" if real_exercise else None,
+        f"Task: {real_task}" if real_task else None,
+        f"Step: {real_step}" if real_step else None,
+    ]
+    context_lines = [line for line in context_lines if line]
+
+    lab_context_section = (
+        "Current Lab Context:\n" + "\n".join(context_lines)
+        if context_lines
+        else "Current Lab Context: Not provided -- do not assume any "
+        "specific exercise, task, or step. If it matters for the answer, "
+        "ask the learner which lab/exercise they need help with."
+    )
+
     ai_prompt = f"""
-    Current Lab Context:
-    Lab Name: {request.lab_name}
-    Exercise: {request.exercise}
-    Task: {request.task}
-    Step: {request.step}
+    {lab_context_section}
 
     User Question:
     {request.user_message}

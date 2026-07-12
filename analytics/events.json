@@ -370,5 +370,379 @@
       "step": "Step 1"
     },
     "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:24:18.548504",
+    "session_id": "frontend-user-1",
+    "question_type": "greeting",
+    "user_message": "hey",
+    "ai_answer": "Hey! How\u2019s it going with the lab so far? Let me know if you need a hand with anything.",
+    "source": null,
+    "score": 0,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:24:50.470846",
+    "session_id": "frontend-user-1",
+    "question_type": "troubleshooting",
+    "user_message": "i am in azure vm and compute lab and i need help",
+    "ai_answer": "Got it! Since you\u2019re in the Azure VM and compute lab, what part do you need help with? Are you trying to connect to the VM, set up something inside it, or working on a specific task like preparing Azure Cloud Shell? Just let me know where you\u2019re stuck or what you want to do next!",
+    "source": "knowledge-base/labguides/virtual-machine-and-compute/lab6.md",
+    "score": 8,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:29:59.733358",
+    "session_id": "test-session",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "If your VM isn't loading, it might be stuck starting up or there could be a connectivity issue. Here\u2019s what you can try next:\n\n1. Refresh the browser tab or close and reopen the VM window.\n2. Wait a couple of minutes to see if it finishes booting.\n3. If there\u2019s a restart option in the lab interface, try restarting the VM.\n4. Check your internet connection to make sure it\u2019s stable.\n\nIf none of that works, you might want to reload the entire lab environment or contact the lab support team for help. Let me know if you want me to guide you through any of these steps!",
+    "source": "knowledge-base/labguides/fabric/26d-transform-data-tsql.md",
+    "score": 6,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2",
+      "task": "Task 3",
+      "step": "Step 5"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:30:40.418040",
+    "session_id": "frontend-user-1",
+    "question_type": "greeting",
+    "user_message": "hey",
+    "ai_answer": "Hey! How\u2019s it going? Let me know if you need any help with the lab.",
+    "source": null,
+    "score": 0,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:30:54.764908",
+    "session_id": "frontend-user-1",
+    "question_type": "lab_help",
+    "user_message": "i am in fabric iq lab",
+    "ai_answer": "Great, you're in the Fabric IQ lab at Exercise 1, Task 1, Step 1. This step is about importing a notebook into your Fabric workspace.\n\nTo get started:\n\n1. Go to your Fabric workspace homepage.\n2. Click on the **Import** option.\n3. Select **Notebook** from the import options.\n4. Choose **From this computer** to upload the notebook file.\n5. Click **Upload** and pick the notebook file you need.\n\nLet me know if you want me to guide you through the next steps!",
+    "source": "knowledge-base/labguides/fabric-iq/Exercise3.md",
+    "score": 8,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:31:12.416247",
+    "session_id": "frontend-user-1",
+    "question_type": "lab_help",
+    "user_message": "i need help in fabric iq lab",
+    "ai_answer": "Sure! Since you\u2019re on Exercise 1, Task 1, Step 1, you need to import a notebook into your Fabric workspace. Here\u2019s what to do:\n\n1. Go to your Fabric workspace homepage.\n2. Click the **Import** button.\n3. Select **Notebook** from the options.\n4. Choose **From this computer** to upload the notebook file.\n5. Click **Upload** and pick the notebook file you want to import.\n\nIf you get stuck or want help with the next step, just let me know!",
+    "source": "knowledge-base/labguides/fabric-iq/Exercise3.md",
+    "score": 8,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:33:11.220101",
+    "session_id": "frontend-user-1",
+    "question_type": "general",
+    "user_message": "i need help",
+    "ai_answer": "Hey! You\u2019re at Exercise 2, Task 3, Step 1. Could you tell me a bit more about what you\u2019re stuck on or what you need help with in this step? That way I can give you the exact guidance you need.",
+    "source": "knowledge-base/labguides/fabric-iq/Exercise3.md",
+    "score": 8,
+    "lab_context": {
+      "lab_id": "fabric-iq",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 2",
+      "task": "Task 3",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:34:31.176774",
+    "session_id": "test-session",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "When a VM isn't loading, it could be due to a few common reasons like network issues, the VM not starting properly, or resource constraints.\n\nHere\u2019s what you can try next:\n\n1. Refresh the VM console or browser tab to see if it was a temporary glitch.\n2. Check if the VM status shows as \"Running\" or \"Starting\" in your lab interface.\n3. If there\u2019s an option to restart or power cycle the VM, try that.\n4. Make sure your internet connection is stable.\n5. If the lab environment has a timeout or session limit, you might need to reconnect or start a new session.\n\nIf none of these help, let me know what exactly you see on the screen or any error messages, and I can guide you further!",
+    "source": "knowledge-base/labguides/fabric/26d-transform-data-tsql.md",
+    "score": 6,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2",
+      "task": "Task 3",
+      "step": "Step 5"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:36:49.431233",
+    "session_id": "test-session",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "When a VM isn't loading, it could be due to a few common reasons like network issues, the VM not starting properly, or resource constraints.\n\nHere\u2019s what you can try next:\n\n1. Refresh the VM console or browser tab to see if it loads.\n2. Check if the VM status shows as \"Running\" or \"Stopped\" in the lab interface.\n3. If it\u2019s stopped, try starting or restarting the VM from the lab controls.\n4. Make sure your internet connection is stable.\n5. If there\u2019s an option to view logs or error messages, check those for clues.\n\nIf none of these help, let me know what exactly you see on the screen or any error messages, and I can guide you further!",
+    "source": "knowledge-base/labguides/fabric/26d-transform-data-tsql.md",
+    "score": 6,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2",
+      "task": "Task 3",
+      "step": "Step 5"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:37:19.699726",
+    "session_id": "frontend-user-1",
+    "question_type": "general",
+    "user_message": "i need help",
+    "ai_answer": "Sure, I\u2019m here to help! What specifically are you stuck on in Exercise 3, Task 2?",
+    "source": null,
+    "score": 0,
+    "lab_context": {
+      "lab_id": "fabric-iq",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 3",
+      "task": "Task 2",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:38:48.775167",
+    "session_id": "frontend-user-1",
+    "question_type": "general",
+    "user_message": "i am not able to view entity type details",
+    "ai_answer": "If you\u2019re not able to view the entity type details in Task 2, make sure you\u2019ve clicked the **View Entity Type details** option from the top banner as shown in the instructions. Sometimes it\u2019s easy to miss that step.\n\nHere\u2019s a quick checklist to help:\n\n1. From your current screen, look for the top banner and click **View Entity Type details**.\n2. After that, click **Overview** in the top banner to see the graph views.\n3. Then you should be able to review the **Properties** section showing all attribute details.\n\nIf the option isn\u2019t clickable or visible, try refreshing the page or checking if you have the right permissions. Let me know if you still can\u2019t see it!",
+    "source": "knowledge-base/labguides/fabric-iq/Exercise3.md",
+    "score": 7,
+    "lab_context": {
+      "lab_id": "fabric-iq",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 3",
+      "task": "Task 2",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:39:39.226482",
+    "session_id": "frontend-user-1",
+    "question_type": "general",
+    "user_message": "i need help",
+    "ai_answer": "Got it! To view the entity type details in Task 2, first click **View Entity Type details** from the top banner. Then click **Overview** to see the graph views. After that, you can review the **Properties** section to see all the attribute details coming from the Lakehouse and Eventhouse.\n\nIf you don\u2019t see the **View Entity Type details** option, try refreshing the page or double-check that you\u2019re in the right place in the lab. Let me know if you get stuck on any of these steps!",
+    "source": "knowledge-base/labguides/fabric-iq/Exercise3.md",
+    "score": 7,
+    "lab_context": {
+      "lab_id": "virtual-machine-and-compute",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 3",
+      "task": "Task 2",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:40:20.530636",
+    "session_id": "frontend-user-1",
+    "question_type": "general",
+    "user_message": "i need help",
+    "ai_answer": "Hey! For Task 2 in Lab 1, to see the entity type details, start by clicking **View Entity Type details** from the top banner. Then click **Overview** to check out the graph views. After that, you can review the **Properties** section to see all the attribute details coming from Lakehouse and Eventhouse.\n\nIf you want to manage how properties are connected, click **Manage Property Binding** next.\n\nLet me know if you\u2019re stuck on any of these steps or if something isn\u2019t showing up!",
+    "source": "knowledge-base/labguides/fabric-iq/Exercise3.md",
+    "score": 7,
+    "lab_context": {
+      "lab_id": "virtual-machine-and-compute",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "lab 1",
+      "task": "Task 2",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:43:42.885937",
+    "session_id": "test-session",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "When the VM isn't loading, it could be due to a few common reasons like resource limits, network issues, or the VM not starting properly.\n\nHere\u2019s what you can try next:\n\n1. Refresh the VM console or browser tab to see if it was a temporary glitch.\n2. Check if the VM status shows as \"Running\" or \"Starting\" in the lab interface.\n3. If there\u2019s an option to restart or reset the VM, try that.\n4. Make sure your internet connection is stable.\n5. If none of these work, try logging out and back into the lab environment.\n\nIf you tell me more about what exactly happens when you try to load the VM (any error messages or how far it gets), I can help you troubleshoot further!",
+    "source": "knowledge-base/labguides/fabric/26d-transform-data-tsql.md",
+    "score": 6,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2",
+      "task": "Task 3",
+      "step": "Step 5"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:45:39.254533",
+    "session_id": "frontend-user-1",
+    "question_type": "general",
+    "user_message": "i am not able to create vnet",
+    "ai_answer": "If you're having trouble creating a virtual network (VNet), it could be due to a few common reasons like permission issues, subscription limits, or incorrect settings.\n\nHere\u2019s what you can check:\n\n1. Make sure you have the right permissions to create resources in your Azure subscription.\n2. Verify that your subscription hasn\u2019t hit any resource limits or quotas.\n3. Double-check the IP address space and subnet settings you\u2019re entering\u2014make sure they don\u2019t overlap with existing VNets.\n4. Try creating the VNet through the Azure portal step-by-step: go to \"Create a resource\" > \"Networking\" > \"Virtual Network,\" then fill in the required fields.\n\nIf you get a specific error message, let me know what it says, and I can help troubleshoot further!",
+    "source": "knowledge-base/labguides/virtual-machine-and-compute/lab1.md",
+    "score": 6,
+    "lab_context": {
+      "lab_id": "virtual-machine-and-compute",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "lab 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:46:07.681386",
+    "session_id": "frontend-user-1",
+    "question_type": "general",
+    "user_message": "region not available",
+    "ai_answer": "If the region you want isn\u2019t showing up or says \"not available,\" it usually means that particular Azure region is either not enabled for your subscription or currently has capacity restrictions.\n\nFor your lab, try selecting a different region like **West US** or another commonly available one from the dropdown. Labs often specify a region to use, so sticking to that recommended region helps avoid this issue.\n\nIf you still don\u2019t see any regions, double-check your subscription and resource group settings to make sure they\u2019re correct. Let me know if you want me to guide you through picking the right region step-by-step!",
+    "source": "knowledge-base/labguides/virtual-machine-and-compute/lab6.md",
+    "score": 5,
+    "lab_context": {
+      "lab_id": "virtual-machine-and-compute",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "lab 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:50:00.985519",
+    "session_id": "frontend-user-1",
+    "question_type": "greeting",
+    "user_message": "hi",
+    "ai_answer": "Hey! How can I help you today? Let me know if you\u2019re working on something specific or just want to chat.",
+    "source": null,
+    "score": 0,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:50:28.271899",
+    "session_id": "frontend-user-1",
+    "question_type": "general",
+    "user_message": "how are you",
+    "ai_answer": "I\u2019m doing great, thanks for asking! How about you? Anything you need help with in your lab or a question on your mind?",
+    "source": "knowledge-base/labguides/virtual-machine-and-compute/lab6.md",
+    "score": 5,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:52:23.098394",
+    "session_id": "frontend-user-1",
+    "question_type": "lab_help",
+    "user_message": "i am not able to create data agent",
+    "ai_answer": "It sounds like you might be missing a step or permission when trying to create the data agent. Usually, you need to enter the data agent name (like \"logy_DataAgent\") in the create data agent field and then click the Create button.\n\nIf that part isn\u2019t working, check these:\n\n1. Make sure you have the right permissions to create a data agent in the environment.\n2. Confirm you\u2019re entering the name exactly as required.\n3. Look for any error messages that pop up when you try to create it\u2014they can give clues.\n4. Sometimes the UI might need a refresh or you might need to re-login.\n\nIf you can share what exactly happens when you try to create it (any error or no response), I can help troubleshoot further!",
+    "source": "knowledge-base/labguides/fabric-iq/Exercise4.md",
+    "score": 10,
+    "lab_context": {
+      "lab_id": "fabric-iq",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "exercise 4",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:53:03.449154",
+    "session_id": "frontend-user-1",
+    "question_type": "lab_help",
+    "user_message": "data agent is not coming in search bar after i selected create new item in workspace",
+    "ai_answer": "If \"Data Agent\" isn\u2019t showing up in the search bar after you click \"New item\" in your Fabric workspace, it usually means the option isn\u2019t available in that workspace or your permissions might be limited.\n\nHere\u2019s what you can try:\n\n1. Double-check you\u2019re in the correct Fabric workspace where data agents can be created.\n2. Make sure you\u2019re typing exactly \"Data Agent\" in the search bar after clicking \"New item.\"\n3. Refresh the workspace page and try again.\n4. Confirm you have the right role or permissions to create data agents\u2014sometimes only certain roles can see that option.\n\nIf it still doesn\u2019t appear, it might be a permissions or environment setup issue. Let me know if you see any error messages or if you want help verifying your permissions!",
+    "source": "knowledge-base/labguides/fabric-iq/Exercise4.md",
+    "score": 15,
+    "lab_context": {
+      "lab_id": "fabric-iq",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "exercise 4",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:53:27.111055",
+    "session_id": "frontend-user-1",
+    "question_type": "general",
+    "user_message": "what permission do i need",
+    "ai_answer": "To create a data agent in Microsoft Fabric, you generally need to have at least the **Contributor** role or a similar permission level on the Fabric workspace. This role allows you to create and manage resources like data agents.\n\nIf you only have Viewer or Reader permissions, you won\u2019t see the option to create new items like data agents.\n\nSo, check with your admin to make sure you have Contributor access (or equivalent) on the workspace where you\u2019re working. That should enable the \"Data Agent\" option to appear when you create a new item.",
+    "source": "knowledge-base/labguides/fabric-iq/Exercise3.md",
+    "score": 5,
+    "lab_context": {
+      "lab_id": "fabric-iq",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "exercise 4",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T15:54:10.452800",
+    "session_id": "frontend-user-1",
+    "question_type": "lab_help",
+    "user_message": "do i need to enable any settings in fabric portal",
+    "ai_answer": "Yes, in the Fabric portal, there are tenant settings you might need to enable to allow users to create certain items like data agents.\n\nSpecifically, you should:\n\n1. Click the **Settings** icon in the Fabric portal.\n2. Go to **Admin Portal** > **Tenant Settings** > **Microsoft Fabric**.\n3. Look for options like **Users can create Ontology (preview) items** and make sure they are **Enabled**.\n4. Apply the changes.\n\nThere might be similar settings related to creating data agents or other resource types that need to be enabled by your admin. If you don\u2019t have access to these settings, you\u2019ll need to ask your tenant admin to enable them for you.",
+    "source": "knowledge-base/labguides/fabric-iq/Exercise-1.md",
+    "score": 14,
+    "lab_context": {
+      "lab_id": "fabric-iq",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "exercise 4",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
   }
 ]
