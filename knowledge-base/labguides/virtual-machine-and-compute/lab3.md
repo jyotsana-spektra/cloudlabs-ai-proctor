@@ -1,1 +1,166 @@
-# Lab 4
+# Lab 03: Deploy a Virtual Machine
+
+## Estimated Duration: 40 Minutes
+
+## Overview
+
+In this lab, you will deploy a Windows-based virtual machine in Azure using the virtual network and availability set created in earlier labs. You will configure compute, storage, and networking settings, including selecting the appropriate image, VM size, and security options. The VM will be attached to the correct subnet and enabled for Remote Desktop Protocol (RDP) access, ensuring secure connectivity. This deployment provides a reliable, scalable, and resilient environment for hosting enterprise applications while leveraging Azure’s high-availability features.
+
+## Lab objective
+
+You will be able to complete the following task:
+
+- Task 1: Deploy a Virtual Machine
+
+## Task 1: Deploy a Virtual Machine
+
+In this task, you will deploy a Windows Server virtual machine into the previously created availability set. This ensures the VM benefits from fault and update domain distribution, improving uptime and resilience for your workloads.
+
+1. Click on the **Hamburger menu (1)** at the upper left corner of the **Azure portal**, then select **+ Create a resource (2)**.
+
+    ![](../instructions/images/Lab1-00.png)
+     
+1. Search for **Virtual Machine (1)** in the search bar and select  **virtual machine (2)** from the results.
+
+      ![](../instructions/images/Lab2-00.png)
+
+1. Under **Virtual machine**, select **Create (1)** drop-down and then choose **Virtual machine (2)**.
+
+      ![](../instructions/images/lab2-image2.png)
+   
+1. On the **Create a virtual machine** blade, under the **Basics** tab, enter the following details:
+  
+    - **Subscription:** Keep the default **Subscription (1)**.
+ 
+    - **Resource group:** Select the existing resource group **azvmrg-<inject key="Deployment ID" enableCopy="false"/> (2)**
+    
+    - **Virtual machine name:** Enter **DEMOLABVM01 (3)**
+   
+    - **Region:** Select **<inject key="Region" enableCopy="false"/>** **(4)** from the  drop-down menu.
+ 
+    - **Availability options:** Choose **Availability set (5)** from the  drop-down menu.
+
+    - **Availability set:** Select the availability set **demolabavaset1 (6)** from the drop-down that you created earlier.
+     
+    -  **Security Type:** Select **Standard (7)** from the  drop-down menu.
+
+       ![](./images/aa8.png)    
+
+    - **Image**: Select **See all images**.
+
+       ![](./images/L3T1S4ii.png)    
+
+    - Click on **Select** drop down under **Windows server**
+
+      ![](./images/L3T1S4iii.png)      
+
+    - Select **Windows Server 2019 Datacenter - x64 Gen2 (8)** from the drop-down.
+
+       ![](../instructions/images2/gen1.png)
+       
+        ![](./images/L3T1S4v.png)
+
+    - Click on **Configure VM generation (1)**, then in the **Configure VM generation** tab select **Generation 1 (2)**, and click **Apply (3)** to set the image to **Windows Server 2019 Datacenter - x64 Gen1**.
+   
+      ![](./images/avmg5.png)
+
+    - **Size:** Select **Standard_D4s_v3 (9)** from the drop-down menu. 
+          
+        >**Note:** In case you don't find the given size of VM from the drop-down list, click on **Change size** later on the **Select a VM size** blade, click on **Clear all filters** and scroll down to select **Standard_D4s_v3** and then click on  **Select**.
+
+        ![](images/avm9.png)     
+
+    - **Username:** `demouser` **(10)**
+
+    - **Password:** `Password.1!!` **(11)**
+
+    - **Confirm Password:** `Password.1!!` **(12)**
+
+    - **Public inbound ports:** Select **Allow selected ports (13)**.
+
+    - **Select inbound ports:** Select **RDP (3389) (14)** from the drop-down.
+
+    - Would you like to use an existing Windows Server license? **Leave as default (15)**.
+
+        > **Note:** If you own Windows Server licenses with active Software Assurance (SA), use Azure Hybrid Benefit to save money. [Learn More](https://azure.microsoft.com/en-us/pricing/hybrid-use-benefit/#services)
+  
+    - Click on **Next : Disks > (16)**.
+  
+       ![](images/avm10.png)
+
+1. On the **Disks** tab, set the following configuration:
+
+   - **OS disk Size:** Keep the default **Size (1)**.
+
+   - **OS disk type:** Select **Premium SSD (locally-redundant storage) (2)**
+
+   - Expand the **Advanced (3)** section, where you will see that **Use managed disks (4)** is checked by default.
+
+     > **Note:** Azure Managed Disks simplifies disk management for Azure IaaS VMs by managing the storage accounts associated with the VM disks. For best performance, reliability, scalability and access control, we recommend Azure Managed Disks for most virtual machine configurations. You only have to specify the type (Premium or Standard) and the size of disk you need, and Azure creates and manages the disk for you. [Learn more](https://docs.microsoft.com/en-us/azure/storage/storage-managed-disks-overview)
+ 
+    -  Click on **Next : Networking > (5)**. 
+
+       ![](./images2/lab3-5.png)
+     
+1. On the **Networking** tab, set the following configurations:
+
+    - **Virtual network:** Select the **DemoLabVnet1 (1)** from the drop-down menu.
+
+    - **Subnet:** Verify that **demolabsubnet (2)** is selected in the  field.
+
+    - Verify that the **Public IP (3)** address field has a status that begins with **(new)**.
+
+       > **Note:** Use a public IP address if you want to communicate with the virtual machine from outside the virtual network. For example, if you need to RDP to the VM, you will need a public IP address. 
+
+   - **NIC network security group:** Select **Advanced (4)**. 
+
+   - In the **Configure network security group**, verify **(new)DEMOLABVM01-nsg (5)** is selected.
+
+       > **Note:** A **Network Security Group (NSG)** is a collection of firewall rules that manage inbound and outbound traffic to and from your virtual machine. [Learn more.](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-networks-nsg)
+
+   -  Make sure the **Enable accelerated networking** check box is selected **(6)**.
+
+       > **Note:** Accelerated networking enables low latency and high throughput on the network interface.
+    
+   - Leave the default option set for **Load balancing**.
+
+   - Click on **Next : Management > (7)**. 
+
+       ![](./images/Lab2-02.png)
+       
+1. On the **Management** tab, leave all settings as default, then click on **Next : Monitoring >**.
+
+      ![](./images/Lab2-03.png)
+
+1. On the **Monitoring** tab, leave all settings as default, then click on **Review + create.**
+
+    > **Note:** Azure Monitor enables you to consume telemetry to gain visibility into the performance and health of your workloads on Azure. The most important type of Azure telemetry data is the metrics (also called performance counters) emitted by most Azure resources. [Learn more.](https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/monitoring-overview-metrics)
+
+      ![](./images/Lab2-04.png)
+
+1. On **Create a virtual machine** blade you will be displayed with a **Validation passed** message at the top of the blade, then click **Create** to deploy the virtual machine. 
+
+    > **Note:** Deployment of the virtual machine can take up to 10 minutes. You can check the status of the virtual machine deployment by clicking on the notification (Bell) icon at the top of the page. While you can wait for the deployment to succeed before continuing to the next scenario, you can continue with subsequent steps while the deployment completes.
+
+    ![](images/Lab2-05.png)
+
+1. Wait for the deployment to complete.
+
+    ![](images2/lab3-10.png)
+
+>**Congratulations** on completing the Task! Now, it's time to validate it. Here are the steps:
+> - Hit the Validate button for the corresponding task. If you receive a success message, you have successfully validated the lab. 
+> - If not, carefully read the error message and retry the step, following the instructions in the lab guide.
+> - If you need any assistance, please contact us at cloudlabs-support@spektrasystems.com.   
+
+<validation step="9167bbff-7946-48a6-bef5-3c037f89f2e9" />
+
+## Summary
+
+In this lab, you have completed the following:
+
+- Deployed a Virtual Machine.
+
+## You have successfully completed the lab. Now, click on **Next >>** from the lower right corner to proceed on to the next lab.
+
+![Launch Azure Portal](../instructions/images2/next.png)
