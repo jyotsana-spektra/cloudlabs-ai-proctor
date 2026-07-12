@@ -744,5 +744,22 @@
       "step": "Step 1"
     },
     "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-12T16:11:27.441873",
+    "session_id": "frontend-user-1",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "When a VM isn\u2019t loading, it could be stuck starting, showing a blank or black screen, or just keeps loading without connecting.\n\nHere are a few quick things to try:\n\n1. Refresh your browser page and try launching the VM again.\n2. Clear your browser cache or try a different browser.\n3. Make sure your internet connection is stable.\n4. If the VM is stuck on \"Starting\" for a long time, try stopping and then restarting it if the lab interface allows.\n5. Sometimes logging out and back into the lab portal helps.\n\nIf none of that works, let me know which lab or exercise you\u2019re in, and I can help you troubleshoot further!",
+    "source": "knowledge-base/troubleshooting/vm-not-loading.md",
+    "score": 6,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
   }
 ]

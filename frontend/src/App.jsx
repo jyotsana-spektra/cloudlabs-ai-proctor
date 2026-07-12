@@ -332,7 +332,7 @@ Tell me:
     <>
       {!isOpen && (
         <button className="floating-launcher" onClick={() => setIsOpen(true)}>
-          <img src="/cloudlabs-icon.svg" alt="CloudLabs" />
+          <img src="/brainy.png" alt="Brainy" />
           <strong>Brainy</strong>
         </button>
       )}
@@ -346,7 +346,7 @@ Tell me:
 
             <div className="brand">
               <div className="brand-icon">
-                <img src="/cloudlabs-icon.svg" alt="CloudLabs" />
+                <img src="/brainy.png" alt="Brainy" />
               </div>
               <div>
                 <h1>Brainy</h1>
@@ -497,7 +497,7 @@ Tell me:
             <header className="topbar">
               <div className="title-wrap">
                 <div className="bot-logo">
-                  <img src="/cloudlabs-icon.svg" alt="CloudLabs" />
+                  <img src="/brainy.png" alt="Brainy" />
                 </div>
                 <div>
                   <h1>Brainy</h1>
@@ -520,7 +520,11 @@ Tell me:
               {messages.map((message, index) => (
                 <div key={index} className={`chat-row ${message.role}`}>
                   <div className={`chat-avatar ${message.role}`}>
-                    {message.role === "assistant" ? "🤖" : "👤"}
+                    {message.role === "assistant" ? (
+                      <img src="/brainy.png" alt="Brainy" />
+                    ) : (
+                      "👤"
+                    )}
                   </div>
 
                   <div className={`chat-bubble ${message.role}`}>
@@ -658,7 +662,9 @@ Tell me:
 
               {loading && (
                 <div className="chat-row assistant">
-                  <div className="chat-avatar assistant">🤖</div>
+                  <div className="chat-avatar assistant">
+                    <img src="/brainy.png" alt="Brainy" />
+                  </div>
                   <div className="typing">
                     <span></span>
                     <span></span>
