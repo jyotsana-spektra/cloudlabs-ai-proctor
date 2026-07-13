@@ -84,7 +84,7 @@ function App() {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      text: "Hi 👋\n\nI'm Brainy. Tell me what issue you are facing, or use Screen Awareness to analyze where you are in the lab.",
+      text: "Welcome! I'm Brainy, your Lab Copilot. Ask me anything, or use Screen Awareness so I can guide you based on your current lab step.",
       source: null,
       score: null,
       userQuestion: "",
@@ -105,7 +105,7 @@ function App() {
     { icon: "🖥️", text: "VM is not loading" },
     { icon: "👤", text: "I cannot login" },
     { icon: "🌐", text: "Azure portal is not opening" },
-    { icon: "⚠️", text: "Lab is stuck" },
+    { icon: "⚠️", text: "I am stuck" },
   ];
 
   useEffect(() => {
@@ -172,7 +172,11 @@ Tell me:
   // isFollowUp = true for canned "did that work?" style replies that carry
   // no topic of their own (e.g. "Still stuck"). These reuse lastTopic
   // instead of overwriting it, and get flagged to the backend.
-  const sendMessage = async (messageText = input, isFollowUp = false) => {
+  const sendMessage = async (
+    messageText = input,
+    isFollowUp = false,
+    viaQuickHelp = false
+  ) => {
     if (!messageText.trim() || loading) return;
 
     const outgoingText =
@@ -222,6 +226,7 @@ Tell me:
           feedbackSent: false,
           webSearchUsed: response.data.web_search_used,
           webSources: response.data.web_sources,
+          quickHelp: viaQuickHelp,
         },
       ]);
     } catch {
@@ -345,28 +350,21 @@ Tell me:
                 <img src="/brainy.png" alt="Brainy" />
               </div>
               <div>
-                <h1>Brainy</h1>
-                <h2>AI Lab Copilot</h2>
+                <h2 className="brand-subtitle">Session Controls</h2>
               </div>
-            </div>
-
-            <div className="status-card">
-              <div>
-                <span className="status-dot"></span>
-                <strong>Backend Connected</strong>
-                <p>Lab Copilot active</p>
-              </div>
-              <div className="wave-icon">〽</div>
             </div>
 
             <div className="panel-card">
               <h3>Current Lab Context</h3>
 
-              <label>Workshop / Lab Guide</label>
+              <label title="Choose the workshop or lab guide you are currently working through">
+                Workshop / Lab Guide
+              </label>
               <select
                 className="context-input"
                 value={labContext.lab_id}
                 onChange={(e) => handleWorkshopChange(e.target.value)}
+                title="Choose the workshop or lab guide you are currently working through"
               >
                 <option value="current-lab">Select a workshop...</option>
                 {availableLabs.map((lab) => (
@@ -380,108 +378,120 @@ Tell me:
               <input
                 className="context-input"
                 value={labContext.lab_name}
-                onChange={(e) => updateContext("lab_name", e.target.value)}
+                readOnly
+                disabled
               />
 
-              <label>Exercise</label>
+              <label title="The exercise number or name you're currently working on, e.g. 'Exercise 2'">
+                Exercise
+              </label>
               <input
                 className="context-input"
                 value={labContext.exercise}
                 onChange={(e) => updateContext("exercise", e.target.value)}
+                title="The exercise number or name you're currently working on, e.g. 'Exercise 2'"
               />
 
-              <label>Task</label>
+              <label title="The task number or name within the current exercise, e.g. 'Task 3'">
+                Task
+              </label>
               <input
                 className="context-input"
                 value={labContext.task}
                 onChange={(e) => updateContext("task", e.target.value)}
+                title="The task number or name within the current exercise, e.g. 'Task 3'"
               />
 
-              <label>Step</label>
+              <label title="The specific step number you're on within the current task, e.g. 'Step 4'">
+                Step
+              </label>
               <input
                 className="context-input"
                 value={labContext.step}
                 onChange={(e) => updateContext("step", e.target.value)}
+                title="The specific step number you're on within the current task, e.g. 'Step 4'"
               />
             </div>
 
             <div className="panel-card">
-              <h3>Screen Awareness</h3>
+              <details open>
+                <summary>🖥️ Screen Awareness</summary>
 
-              <label>Current Screen</label>
-              <select
-                className="context-input"
-                value={screenContext.currentScreen}
-                onChange={(e) =>
-                  setScreenContext({
-                    ...screenContext,
-                    currentScreen: e.target.value,
-                  })
-                }
-              >
-                {getScreenOptions(labContext.lab_id).screens.map((screen) => (
-                  <option key={screen}>{screen}</option>
-                ))}
-              </select>
+                <div className="field-group">
+                  <label>Current Screen</label>
+                  <select
+                    className="context-input"
+                    value={screenContext.currentScreen}
+                    onChange={(e) =>
+                      setScreenContext({
+                        ...screenContext,
+                        currentScreen: e.target.value,
+                      })
+                    }
+                  >
+                    {getScreenOptions(labContext.lab_id).screens.map((screen) => (
+                      <option key={screen}>{screen}</option>
+                    ))}
+                  </select>
+                </div>
 
-              <label>Detected Page</label>
-              <select
-                className="context-input"
-                value={screenContext.detectedPage}
-                onChange={(e) =>
-                  setScreenContext({
-                    ...screenContext,
-                    detectedPage: e.target.value,
-                  })
-                }
-              >
-                {getScreenOptions(labContext.lab_id).pages.map((page) => (
-                  <option key={page}>{page}</option>
-                ))}
-              </select>
+                <div className="field-group">
+                  <label>Detected Page</label>
+                  <select
+                    className="context-input"
+                    value={screenContext.detectedPage}
+                    onChange={(e) =>
+                      setScreenContext({
+                        ...screenContext,
+                        detectedPage: e.target.value,
+                      })
+                    }
+                  >
+                    {getScreenOptions(labContext.lab_id).pages.map((page) => (
+                      <option key={page}>{page}</option>
+                    ))}
+                  </select>
+                </div>
 
-              <label>Learner State</label>
-              <select
-                className="context-input"
-                value={screenContext.learnerState}
-                onChange={(e) =>
-                  setScreenContext({
-                    ...screenContext,
-                    learnerState: e.target.value,
-                  })
-                }
-              >
-                <option>Needs Help</option>
-                <option>Wrong Page</option>
-                <option>Stuck</option>
-                <option>Error Visible</option>
-                <option>Ready for Next Step</option>
-              </select>
+                <div className="field-group">
+                  <label>Learner State</label>
+                  <select
+                    className="context-input"
+                    value={screenContext.learnerState}
+                    onChange={(e) =>
+                      setScreenContext({
+                        ...screenContext,
+                        learnerState: e.target.value,
+                      })
+                    }
+                  >
+                    <option>Needs Help</option>
+                    <option>Wrong Page</option>
+                    <option>Stuck</option>
+                    <option>Error Visible</option>
+                    <option>Ready for Next Step</option>
+                  </select>
+                </div>
 
-              <button className="analyze-btn" onClick={analyzeCurrentScreen}>
-                🧠 Analyze Current Screen
-              </button>
-            </div>
-
-            <div className="panel-card">
-              <div className="progress-title">
-                <span>Lab Progress</span>
-                <strong>60%</strong>
-              </div>
-              <div className="progress-bar">
-                <div className="progress-fill"></div>
-              </div>
-              <p className="small-text">Context-aware guidance enabled</p>
+                <button className="analyze-btn" onClick={analyzeCurrentScreen}>
+                  🧠 Analyze Current Screen
+                </button>
+              </details>
             </div>
 
             <div className="panel-card quick-help">
-              <h3>Quick Help</h3>
-              {quickPrompts.map((item) => (
-                <button key={item.text} onClick={() => sendMessage(item.text)}>
-                  <span>{item.icon}</span>
-                  {item.text}
-                </button>
-              ))}
+              <details open>
+                <summary>💡 Quick Help</summary>
+                {quickPrompts.map((item) => (
+                  <button
+                    key={item.text}
+                    onClick={() => sendMessage(item.text, false, true)}
+                  >
+                    <span className="qh-icon">{item.icon}</span>
+                    {item.text}
+                  </button>
+                ))}
+              </details>
             </div>
 
             <button className="clear-chat" onClick={clearChat}>
@@ -526,6 +536,7 @@ Tell me:
                   <div className={`chat-bubble ${message.role}`}>
                     {message.role === "assistant" &&
                       index !== 0 &&
+                      !message.quickHelp &&
                       message.questionType === "troubleshooting" &&
                       message.source && (
                         <div className="trouble-card-title">
@@ -536,6 +547,7 @@ Tell me:
                     <p>{message.text}</p>
 
                     {message.role === "assistant" &&
+                      !message.quickHelp &&
                       message.webSearchUsed &&
                       message.webSources?.length > 0 && (
                       <div className="trouble-card web-search-card">
@@ -559,6 +571,7 @@ Tell me:
                     )}
 
                     {message.role === "assistant" &&
+                      !message.quickHelp &&
                       message.questionType === "troubleshooting" &&
                       message.source && (
                       <div className="trouble-card">

@@ -1,8 +1,9 @@
 from openai import OpenAI
 from backend.config import settings
+from backend.constants import SUPPORT_EMAIL
 
 
-SYSTEM_PROMPT = """
+SYSTEM_PROMPT = f"""
 You are Brainy, an AI copilot embedded inside hands-on lab environments.
 
 Talk like a knowledgeable, friendly human copilot -- not a form. Answer the
@@ -40,18 +41,25 @@ Guidelines:
   official lab guide, since it may not match the exact lab environment.
 - Only suggest escalating to a human proctor if the issue truly can't be
   resolved with the information available.
+- If the question is outside your scope, or the knowledge base/web search
+  content above isn't enough to give a confident, safe answer, say plainly
+  that you don't have enough information to help with this one -- do not
+  guess or make up steps. In that case, tell the learner to reach out to
+  CloudLabs Support at {SUPPORT_EMAIL} for further assistance.
 
 Scope:
 You may answer questions about CloudLabs labs, Azure, Microsoft Fabric,
 Power Platform, virtual machines, lab troubleshooting, login issues,
 deployment issues, permissions, and lab navigation. If asked something
-outside this scope, politely say so.
+outside this scope, politely say so and point them to CloudLabs Support at
+{SUPPORT_EMAIL}.
 
 Rules:
 - Be concise and practical.
 - Do not invent lab steps not present in the provided knowledge base.
 - If the knowledge base doesn't have enough detail, say so and give safe,
-  general guidance instead.
+  general guidance instead. If you can't even offer safe general guidance,
+  direct the learner to CloudLabs Support at {SUPPORT_EMAIL}.
 """
 
 CASUAL_SYSTEM_PROMPT = """
@@ -157,5 +165,7 @@ Answer the learner naturally, following the system instructions above.
         return (
             "I couldn't generate a response because the AI service hit an error. "
             "Please verify the backend is running and the Azure OpenAI endpoint, "
-            "API key, and deployment name are configured correctly, then try again."
+            "API key, and deployment name are configured correctly, then try again. "
+            f"If this keeps happening, contact CloudLabs Support at {SUPPORT_EMAIL} "
+            "for further assistance."
         )

@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from backend.config import settings
+from backend.constants import SUPPORT_EMAIL
 from backend.models import ChatRequest
 
 from backend.services.classifier_service import classify_question
@@ -219,6 +220,52 @@ def chat(request: ChatRequest):
         casual=(question_type == "greeting"),
         web_results=web_results,
     )
+
+    # Deterministic safety net: if this was a real lab/troubleshooting
+    # question (not a low-signal follow-up) and neither the knowledge base
+    # nor a web search fallback turned up anything, OR the model's own
+    # answer already signals it can't actually help (defers to support/an
+    # administrator, or says it lacks the ability/access to do something),
+    # always make sure the actual CloudLabs support email address is
+    # present -- don't rely on the model to remember to include it, since
+    # it inconsistently says things like "point you to the right support
+    # channel" or "I don't have the ability to do that" without ever
+    # naming the address.
+    no_answer_available = (
+        question_type in ("troubleshooting", "lab_help")
+        and not kb_result.get("found")
+        and not kb_result.get("low_signal")
+        and not web_results
+    )
+
+    NO_ANSWER_PHRASES = (
+        "contact support",
+        "reach out",
+        "support team",
+        "support channel",
+        "support contact",
+        "lab administrator",
+        "cloudlabs support",
+        "customer support",
+        "point you to",
+        "who to contact",
+        "i don't have the ability",
+        "i do not have the ability",
+        "i'm not able to",
+        "i am not able to",
+        "i don't have access",
+        "i do not have access",
+        "outside my scope",
+    )
+    signals_no_answer = any(
+        phrase in ai_answer.lower() for phrase in NO_ANSWER_PHRASES
+    )
+
+    if SUPPORT_EMAIL not in ai_answer and (no_answer_available or signals_no_answer):
+        ai_answer = (
+            ai_answer.rstrip()
+            + f"\n\nYou can reach CloudLabs Support at {SUPPORT_EMAIL} for further assistance."
+        )
 
     add_message(session_id, "assistant", ai_answer)
 
