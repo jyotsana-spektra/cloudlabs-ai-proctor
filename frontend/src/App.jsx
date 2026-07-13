@@ -21,10 +21,6 @@ const SCREEN_OPTIONS_BY_LAB = {
     screens: ["Azure Portal", "Microsoft Fabric", "CloudLabs VM", "Login Page", "Power Automate"],
     pages: ["Unknown", "Home Page", "Workspace Page", "Wrong Page", "Error Page"],
   },
-  fabric: {
-    screens: ["Microsoft Fabric", "Power BI Service", "Azure Portal", "Login Page"],
-    pages: ["Unknown", "Home Page", "Workspace Page", "Lakehouse Page", "Eventhouse Page", "Data Agent Page", "Notebook Page", "Wrong Page", "Error Page"],
-  },
   "fabric-iq": {
     screens: ["Microsoft Fabric", "Power BI Service", "Azure Portal", "Login Page"],
     pages: ["Unknown", "Home Page", "Workspace Page", "Lakehouse Page", "Eventhouse Page", "Data Agent Page", "Ontology Page", "Wrong Page", "Error Page"],
