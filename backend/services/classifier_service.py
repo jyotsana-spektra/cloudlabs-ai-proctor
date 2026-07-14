@@ -93,3 +93,87 @@ def classify_question(question: str) -> str:
             return "lab_help"
 
     return "general"
+
+
+# Phrases that mean the learner is explicitly asking to be connected to a
+# human/CloudLabs support, regardless of whether they also described a lab
+# issue. Checked directly against the learner's own message, independent of
+# how the AI ends up answering, so escalation intent is never missed just
+# because the model's reply happens not to use certain wording.
+SUPPORT_REQUEST_PHRASES = [
+    "connect me to support",
+    "connect me with support",
+    "connect to support",
+    "connect me to cloudlabs support",
+    "talk to a human",
+    "talk to support",
+    "talk to a person",
+    "talk to someone",
+    "speak to a human",
+    "speak with a human",
+    "speak to support",
+    "speak to someone",
+    "human agent",
+    "human support",
+    "real person",
+    "live agent",
+    "live chat",
+    "escalate",
+    "raise a ticket",
+    "open a ticket",
+    "file a ticket",
+    "contact support",
+    "contact cloudlabs",
+    "reach support",
+    "reach out to support",
+    "get me support",
+    "need a human",
+    "need human help",
+    "customer support",
+    "support team",
+]
+
+
+def wants_human_support(question: str) -> bool:
+    """True when the learner's own message is asking to be connected to a
+    human/support channel, e.g. "connect me to support" or "I want to talk
+    to a human" -- independent of lab-issue keywords or the AI's answer."""
+
+    question = question.lower().strip()
+    return any(phrase in question for phrase in SUPPORT_REQUEST_PHRASES)
+
+
+# Patterns for requests that ask Brainy to actually PERFORM an
+# administrative/account/environment action on the learner's behalf --
+# extend a lab's duration, unlock an account, issue a refund, grant admin
+# access, etc. Brainy is a chat copilot with no real access to make these
+# changes, so these should go straight to a "can't do that, contact
+# support" answer instead of the AI guessing, hallucinating a workaround,
+# or asking an unhelpful clarifying question. Kept separate from
+# TROUBLESHOOTING_KEYWORDS/LAB_KEYWORDS since this is about the *type of
+# ask* (do this FOR me) rather than a topic.
+ACTION_REQUEST_PATTERNS = [
+    r"\bextend\b.{0,30}\b(lab|duration|time|session|deadline|access)\b",
+    r"\b(add|give|grant)\b.{0,15}\bmore time\b",
+    r"\bmore time\b.{0,15}\b(lab|session|exercise)\b",
+    r"\breset\b.{0,20}\b(vm|lab|environment|timer)\b.{0,15}\bfor me\b",
+    r"\bunlock\b.{0,20}\b(account|lab|vm|environment)\b",
+    r"\b(grant|give)\b.{0,15}\b(admin|administrator)\b.{0,15}\baccess\b",
+    r"\bdelete\b.{0,15}\baccount\b",
+    r"\brefund\b",
+    r"\bcancel\b.{0,15}\b(subscription|order|license|licence)\b",
+    r"\b(upgrade|downgrade)\b.{0,15}\b(plan|subscription|license|licence)\b",
+    r"\brenew\b.{0,15}\b(license|licence|subscription)\b",
+    r"\brestart\b.{0,20}\benvironment\b.{0,15}\bfor me\b",
+]
+
+
+def wants_unavailable_action(question: str) -> bool:
+    """True when the learner is asking Brainy to directly perform an
+    account/environment/admin action (e.g. "can you extend my lab
+    duration?") rather than asking for information or troubleshooting
+    help. Brainy has no real access to do these, so they should be routed
+    straight to CloudLabs Support instead of answered/clarified."""
+
+    question = question.lower().strip()
+    return any(re.search(pattern, question) for pattern in ACTION_REQUEST_PATTERNS)

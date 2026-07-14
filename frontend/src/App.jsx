@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import API from "./services/api";
+import { SUPPORT_EMAIL, LIVE_CHAT_URL } from "./config";
 import "./App.css";
 
 // Fixed session id used for every request from this browser tab. Because
@@ -42,24 +43,6 @@ const SCREEN_OPTIONS_BY_LAB = {
 const getScreenOptions = (labId) =>
   SCREEN_OPTIONS_BY_LAB[labId] || SCREEN_OPTIONS_BY_LAB["current-lab"];
 
-// Simple keyword heuristic that maps what the learner actually typed to a
-// Learner State, so Screen Awareness reflects the issue they reported
-// instead of always defaulting to "Needs Help" until manually changed.
-const inferLearnerState = (text) => {
-  const t = text.toLowerCase();
-
-  if (/error|denied|failed|failure/.test(t)) return "Error Visible";
-  if (/wrong (page|screen)/.test(t)) return "Wrong Page";
-  if (/stuck|cannot|can't|cant|won't|wont|not working|not loading|not responding|timeout/.test(t)) {
-    return "Stuck";
-  }
-  if (/done|finished|completed|next step|what's next|ready/.test(t)) {
-    return "Ready for Next Step";
-  }
-
-  return "Needs Help";
-};
-
 function App() {
   const chatEndRef = useRef(null);
 
@@ -78,7 +61,6 @@ function App() {
   const [screenContext, setScreenContext] = useState({
     currentScreen: getScreenOptions("current-lab").screens[0],
     detectedPage: getScreenOptions("current-lab").pages[0],
-    learnerState: "Needs Help",
   });
 
   const [messages, setMessages] = useState([
@@ -146,12 +128,40 @@ function App() {
     return source.split("/").pop();
   };
 
+  // Pre-fills a mailto: draft with the learner's current lab context and
+  // last-asked question so they can just hit send -- no need to manually
+  // look up or copy the support email address.
+  const openSupportEmail = () => {
+    const subject = `CloudLabs Lab Support Request - ${labContext.lab_name}`;
+    const body = [
+      "Hi CloudLabs Support team,",
+      "",
+      "I need help with my lab.",
+      "",
+      `Workshop: ${labContext.lab_name}`,
+      `Exercise: ${labContext.exercise}`,
+      `Task: ${labContext.task}`,
+      `Step: ${labContext.step}`,
+      "",
+      `Issue: ${lastTopic || "(please describe your issue here)"}`,
+    ].join("\n");
+
+    window.location.href = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
+  };
+
+  // Opens CloudLabs' live chat support in a new tab -- a one-click handoff
+  // to a human instead of the learner having to go find the link themselves.
+  const openLiveChat = () => {
+    window.open(LIVE_CHAT_URL, "_blank", "noopener,noreferrer");
+  };
+
   const analyzeCurrentScreen = () => {
     const message = `
 I am currently on:
 Screen: ${screenContext.currentScreen}
 Detected Page: ${screenContext.detectedPage}
-Learner State: ${screenContext.learnerState}
 
 Lab Context:
 Lab Name: ${labContext.lab_name}
@@ -186,13 +196,6 @@ Tell me:
 
     if (!isFollowUp) {
       setLastTopic(messageText);
-      // Keep the Screen Awareness "Learner State" in sync with the actual
-      // issue the learner just described, instead of it staying stuck on
-      // whatever was last picked (or the "Needs Help" default).
-      setScreenContext((prev) => ({
-        ...prev,
-        learnerState: inferLearnerState(messageText),
-      }));
     }
 
     setMessages((prev) => [
@@ -227,6 +230,7 @@ Tell me:
           webSearchUsed: response.data.web_search_used,
           webSources: response.data.web_sources,
           quickHelp: viaQuickHelp,
+          needsSupport: response.data.needs_support,
         },
       ]);
     } catch {
@@ -312,7 +316,6 @@ Tell me:
     setScreenContext({
       currentScreen: options.screens[0],
       detectedPage: options.pages[0],
-      learnerState: "Needs Help",
     });
 
     clearBackendSession();
@@ -453,26 +456,6 @@ Tell me:
                   </select>
                 </div>
 
-                <div className="field-group">
-                  <label>Learner State</label>
-                  <select
-                    className="context-input"
-                    value={screenContext.learnerState}
-                    onChange={(e) =>
-                      setScreenContext({
-                        ...screenContext,
-                        learnerState: e.target.value,
-                      })
-                    }
-                  >
-                    <option>Needs Help</option>
-                    <option>Wrong Page</option>
-                    <option>Stuck</option>
-                    <option>Error Visible</option>
-                    <option>Ready for Next Step</option>
-                  </select>
-                </div>
-
                 <button className="analyze-btn" onClick={analyzeCurrentScreen}>
                   🧠 Analyze Current Screen
                 </button>
@@ -567,6 +550,34 @@ Tell me:
                             </li>
                           ))}
                         </ul>
+                      </div>
+                    )}
+
+                    {message.role === "assistant" &&
+                      index !== 0 &&
+                      !message.quickHelp &&
+                      message.needsSupport && (
+                      <div className="trouble-card support-inline-card">
+                        <h4 className="recommended">🆘 Connect with Support</h4>
+                        <div className="support-actions">
+                          <button
+                            className="support-btn"
+                            onClick={openSupportEmail}
+                            title={`Email ${SUPPORT_EMAIL}`}
+                          >
+                            <span className="support-icon">📧</span>
+                            Email
+                          </button>
+
+                          <button
+                            className="support-btn"
+                            onClick={openLiveChat}
+                            title="Chat live with CloudLabs Support"
+                          >
+                            <span className="support-icon">💬</span>
+                            Live Chat
+                          </button>
+                        </div>
                       </div>
                     )}
 

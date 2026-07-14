@@ -5,7 +5,11 @@ from backend.config import settings
 from backend.constants import SUPPORT_EMAIL
 from backend.models import ChatRequest
 
-from backend.services.classifier_service import classify_question
+from backend.services.classifier_service import (
+    classify_question,
+    wants_human_support,
+    wants_unavailable_action,
+)
 from backend.services.search_service import search_knowledge_base
 from backend.services.ai_service import generate_response
 from backend.services.web_search_service import search_web
@@ -112,6 +116,19 @@ def chat(request: ChatRequest):
 
     question_type = classify_question(request.user_message)
 
+    # Detected straight from the learner's own message (e.g. "connect me to
+    # support", "talk to a human") -- independent of question_type/AI wording,
+    # so an explicit ask for a human is never missed.
+    user_requested_support = wants_human_support(request.user_message)
+
+    # Detected straight from the learner's own message too: are they asking
+    # Brainy to actually PERFORM an account/environment action (e.g. "can
+    # you extend lab duration?") rather than asking for information? Brainy
+    # has no real access to do these, so this always routes to support
+    # instead of letting the AI guess or ask an unhelpful clarifying
+    # question about which platform/lab -- the answer is the same either way.
+    requests_unavailable_action = wants_unavailable_action(request.user_message)
+
     # Casual chit-chat (greetings/thanks/acknowledgements) shouldn't touch
     # the knowledge base at all, and must NEVER reuse a previous session's
     # cached KB result -- that produced replies like "hi" coming back with
@@ -213,13 +230,28 @@ def chat(request: ChatRequest):
     {request.user_message}
     """
 
-    ai_answer = generate_response(
-        ai_prompt,
-        kb_result["content"],
-        history,
-        casual=(question_type == "greeting"),
-        web_results=web_results,
-    )
+    if requests_unavailable_action:
+        # Deterministic, not model-generated: this is an action Brainy
+        # genuinely cannot perform regardless of which lab/platform is
+        # involved, so skip the AI call entirely rather than risk it
+        # hallucinating a workaround or asking a pointless clarifying
+        # question.
+        ai_answer = (
+            "I'm an AI lab copilot, so I don't have the ability to make "
+            "account or environment changes myself -- things like "
+            "extending lab duration, unlocking access, issuing refunds, "
+            "or changing a subscription. "
+            f"Please reach out to CloudLabs Support at {SUPPORT_EMAIL} and "
+            "they'll be able to help with this directly."
+        )
+    else:
+        ai_answer = generate_response(
+            ai_prompt,
+            kb_result["content"],
+            history,
+            casual=(question_type == "greeting"),
+            web_results=web_results,
+        )
 
     # Deterministic safety net: if this was a real lab/troubleshooting
     # question (not a low-signal follow-up) and neither the knowledge base
@@ -256,16 +288,62 @@ def chat(request: ChatRequest):
         "i don't have access",
         "i do not have access",
         "outside my scope",
+        # Broader refusal phrasings so unusual/out-of-scope demands (things
+        # Brainy simply can't do, e.g. "book something", "connect me to
+        # support directly", "delete my account") still deterministically
+        # surface the support email even when the model's exact wording
+        # doesn't match one of the narrower phrases above.
+        "i can't do that",
+        "i cannot do that",
+        "i can't help with that",
+        "i cannot help with that",
+        "i can't assist with",
+        "i cannot assist with",
+        "i can't fulfill",
+        "i cannot fulfill",
+        "i can't connect you",
+        "i cannot connect you",
+        "i can't provide",
+        "i cannot provide",
+        "i'm unable to",
+        "i am unable to",
+        "not something i can",
+        "not able to do that",
+        "beyond my capabilities",
+        "beyond what i can",
+        "outside what i can",
+        "i don't have the capability",
+        "i do not have the capability",
+        "i'm just an ai",
+        "i am just an ai",
+        "as an ai",
     )
     signals_no_answer = any(
         phrase in ai_answer.lower() for phrase in NO_ANSWER_PHRASES
     )
 
-    if SUPPORT_EMAIL not in ai_answer and (no_answer_available or signals_no_answer):
+    if SUPPORT_EMAIL not in ai_answer and (
+        user_requested_support
+        or requests_unavailable_action
+        or no_answer_available
+        or signals_no_answer
+    ):
         ai_answer = (
             ai_answer.rstrip()
             + f"\n\nYou can reach CloudLabs Support at {SUPPORT_EMAIL} for further assistance."
         )
+
+    # Single, authoritative signal for the frontend to decide whether to
+    # show the "Connect with Support" CTA -- combines an explicit learner
+    # request, an unavailable-action ask, the deterministic no-answer case,
+    # and the AI's own refusal wording, instead of the frontend having to
+    # re-detect this by scanning the answer text for the support email.
+    needs_support = (
+        user_requested_support
+        or requests_unavailable_action
+        or no_answer_available
+        or signals_no_answer
+    )
 
     add_message(session_id, "assistant", ai_answer)
 
@@ -291,6 +369,7 @@ def chat(request: ChatRequest):
         "lab_context": lab_context,
         "web_search_used": bool(web_results),
         "web_sources": web_results,
+        "needs_support": needs_support,
     }
 
 
