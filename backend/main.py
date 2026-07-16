@@ -9,6 +9,7 @@ from backend.services.classifier_service import (
     classify_question,
     wants_human_support,
     wants_unavailable_action,
+    detects_misuse,
 )
 from backend.services.search_service import search_knowledge_base
 from backend.services.ai_service import generate_response
@@ -19,6 +20,7 @@ from backend.services.session_service import (
     clear_session
 )
 from backend.services.logger_service import log_chat_event
+from backend.services.escalation_service import flag_misuse
 
 from backend.utils.validators import validate_chat_request
 
@@ -116,6 +118,48 @@ def chat(request: ChatRequest):
 
     question_type = classify_question(request.user_message)
 
+    # Only treat lab context fields as genuinely unset when NO workshop has
+    # been selected at all. The sidebar starts with generic placeholder text
+    # ("current-lab" / "Current CloudLabs Lab" / "Exercise 1" / "Task 1" /
+    # "Step 1") before the learner picks a workshop, so a plain empty-string/
+    # None check isn't enough there. BUT once the learner has actually
+    # selected a real workshop from the "Workshop / Lab Guide" dropdown
+    # (lab_id is no longer the "current-lab" fallback), the Exercise/Task/
+    # Step fields shown in the sidebar ARE the learner's real, currently
+    # selected context -- even if they still read the defaults "Exercise 1"/
+    # "Task 1"/"Step 1" (a perfectly common, real starting point) -- and
+    # must be trusted as-is instead of being discarded as guesswork. Previously
+    # they were always nulled out on a literal string match, so Brainy kept
+    # asking "which lab/exercise are you on?" even though it was clearly
+    # selected in the UI. Computed up front (before the KB search) so
+    # lab_id/exercise/task/step are ALWAYS applied together as structured
+    # search metadata, not just used later in the prompt text.
+    PLACEHOLDER_LAB_CONTEXT = {
+        "lab_id": "current-lab",
+        "lab_name": "current cloudlabs lab",
+        "exercise": "exercise 1",
+        "task": "task 1",
+        "step": "step 1",
+    }
+
+    lab_selected = bool(request.lab_id) and (
+        request.lab_id.strip().lower() != PLACEHOLDER_LAB_CONTEXT["lab_id"]
+    )
+
+    def _real_value(field: str, value: str | None) -> str | None:
+        if not value:
+            return None
+        if field in ("exercise", "task", "step") and lab_selected:
+            return value
+        if value.strip().lower() == PLACEHOLDER_LAB_CONTEXT[field]:
+            return None
+        return value
+
+    real_lab_name = _real_value("lab_name", request.lab_name)
+    real_exercise = _real_value("exercise", request.exercise)
+    real_task = _real_value("task", request.task)
+    real_step = _real_value("step", request.step)
+
     # Detected straight from the learner's own message (e.g. "connect me to
     # support", "talk to a human") -- independent of question_type/AI wording,
     # so an explicit ask for a human is never missed.
@@ -128,6 +172,23 @@ def chat(request: ChatRequest):
     # instead of letting the AI guess or ask an unhelpful clarifying
     # question about which platform/lab -- the answer is the same either way.
     requests_unavailable_action = wants_unavailable_action(request.user_message)
+
+    # Detected straight from the learner's own message: does it look like
+    # an attempt to misuse the lab environment (spin up extra/unauthorized
+    # resources, bypass quotas, crypto-mine) or something clearly malicious
+    # (jailbreak/prompt-injection attempts, credential theft, attacking
+    # other systems)? Brainy must never try to help with these -- it should
+    # refuse and the session gets auto-flagged for the CloudLabs
+    # support/proctor team to review (see GET /admin/alerts).
+    attempts_misuse = detects_misuse(request.user_message)
+
+    if attempts_misuse:
+        flag_misuse(
+            session_id=session_id,
+            user_message=request.user_message,
+            reason="Possible lab misuse or policy violation detected",
+            lab_context=lab_context,
+        )
 
     # Casual chit-chat (greetings/thanks/acknowledgements) shouldn't touch
     # the knowledge base at all, and must NEVER reuse a previous session's
@@ -143,16 +204,20 @@ def chat(request: ChatRequest):
         }
     else:
         # IMPORTANT: search on the learner's RAW message only. Do not wrap it
-        # in the "Lab Name: / Task: / Step:" template before searching --
-        # those literal labels used to pollute keyword scoring on every single
-        # request. Structured lab/task/step context is passed separately below
-        # so it can be used as metadata matching instead of noisy free-text.
+        # in the "Lab Name: / Exercise: / Task: / Step:" template before
+        # searching -- those literal labels used to pollute keyword scoring
+        # on every single request. Structured lab/exercise/task/step context
+        # is passed separately below so it's used as metadata matching
+        # instead of noisy free-text -- ALL FOUR fields are always passed
+        # together so the retrieved content is scoped to the learner's exact
+        # exercise and step, not just the lab/task.
         kb_result = search_knowledge_base(
             request.user_message,
             question_type,
             request.lab_id,
-            request.task,
-            request.step,
+            real_exercise,
+            real_task,
+            real_step,
         )
 
         # If this message didn't carry enough real signal (e.g. a generic
@@ -179,34 +244,6 @@ def chat(request: ChatRequest):
     ):
         web_results = search_web(request.user_message)
 
-    # Only tell the LLM about lab context fields the learner/UI actually
-    # provided. The frontend's sidebar pre-fills these fields with default
-    # placeholder text ("current-lab" / "Current CloudLabs Lab" /
-    # "Exercise 1" / "Task 1" / "Step 1") even when the learner hasn't
-    # touched them, so a plain empty-string/None check isn't enough --
-    # those exact defaults must be treated as "not provided" too, otherwise
-    # the model treats the placeholder as a real fact and confidently
-    # assumes/hallucinates a specific exercise/task/step.
-    PLACEHOLDER_LAB_CONTEXT = {
-        "lab_id": "current-lab",
-        "lab_name": "current cloudlabs lab",
-        "exercise": "exercise 1",
-        "task": "task 1",
-        "step": "step 1",
-    }
-
-    def _real_value(field: str, value: str | None) -> str | None:
-        if not value:
-            return None
-        if value.strip().lower() == PLACEHOLDER_LAB_CONTEXT[field]:
-            return None
-        return value
-
-    real_lab_name = _real_value("lab_name", request.lab_name)
-    real_exercise = _real_value("exercise", request.exercise)
-    real_task = _real_value("task", request.task)
-    real_step = _real_value("step", request.step)
-
     context_lines = [
         f"Lab Name: {real_lab_name}" if real_lab_name else None,
         f"Exercise: {real_exercise}" if real_exercise else None,
@@ -219,8 +256,15 @@ def chat(request: ChatRequest):
         "Current Lab Context:\n" + "\n".join(context_lines)
         if context_lines
         else "Current Lab Context: Not provided -- do not assume any "
-        "specific exercise, task, or step. If it matters for the answer, "
-        "ask the learner which lab/exercise they need help with."
+        "specific exercise, task, or step. This does NOT mean you should "
+        "withhold help: if the learner describes an actual problem (an "
+        "error, something not working, being stuck) and the knowledge base "
+        "content above has relevant troubleshooting guidance, give that "
+        "guidance directly right away using the general/common steps -- do "
+        "not block a real troubleshooting answer on first asking which lab "
+        "or exercise they're in. Only ask which lab/exercise they need help "
+        "with if the retrieved knowledge base content isn't relevant or the "
+        "answer genuinely depends on which lab/platform they're using."
     )
 
     ai_prompt = f"""
@@ -230,7 +274,20 @@ def chat(request: ChatRequest):
     {request.user_message}
     """
 
-    if requests_unavailable_action:
+    if attempts_misuse:
+        # Deterministic refusal -- never let the model see/respond to this
+        # request, since it's a policy-violation signal, not a real
+        # question to answer or clarify.
+        ai_answer = (
+            "I can't help with that -- it looks like it would misuse the "
+            "lab environment or go against acceptable-use policy (e.g. "
+            "provisioning extra/unauthorized resources or bypassing "
+            "restrictions). I've flagged this for the CloudLabs support/"
+            "proctor team to review. "
+            f"If you believe this is a mistake, please reach out to CloudLabs "
+            f"Support at {SUPPORT_EMAIL}."
+        )
+    elif requests_unavailable_action:
         # Deterministic, not model-generated: this is an action Brainy
         # genuinely cannot perform regardless of which lab/platform is
         # involved, so skip the AI call entirely rather than risk it
@@ -343,6 +400,7 @@ def chat(request: ChatRequest):
         or requests_unavailable_action
         or no_answer_available
         or signals_no_answer
+        or attempts_misuse
     )
 
     add_message(session_id, "assistant", ai_answer)

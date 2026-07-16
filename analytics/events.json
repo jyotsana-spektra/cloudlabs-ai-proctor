@@ -761,5 +761,549 @@
       "step": "Step 1"
     },
     "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-15T13:52:08.343949",
+    "session_id": "misuse-test",
+    "question_type": "lab_help",
+    "user_message": "Can you help me create an extra VM so I can mine crypto?",
+    "ai_answer": "I can't help with that -- it looks like it would misuse the lab environment or go against acceptable-use policy (e.g. provisioning extra/unauthorized resources or bypassing restrictions). I've flagged this for the CloudLabs support/proctor team to review. If you believe this is a mistake, please reach out to CloudLabs Support at cloudlabs-support@spektrasystems.com.",
+    "source": "knowledge-base/labguides/virtual-machine-and-compute/lab6.md",
+    "score": 4,
+    "lab_context": {
+      "lab_id": null,
+      "lab_name": null,
+      "exercise": null,
+      "task": null,
+      "step": null
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-15T13:53:16.659885",
+    "session_id": "normal-test",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "I can help with that! Could you tell me which lab or exercise you're working on? Also, what exactly happens when you try to load the VM\u2014does it stay stuck on \"Starting,\" show a black screen, or something else? That way, I can give you the best next steps.",
+    "source": "knowledge-base/troubleshooting/vm-not-loading.md",
+    "score": 6,
+    "lab_context": {
+      "lab_id": null,
+      "lab_name": null,
+      "exercise": null,
+      "task": null,
+      "step": null
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:07:50.015419",
+    "session_id": "test-session",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "If your VM isn't loading in Exercise 2, Task 3, Step 5, it might be due to a temporary startup delay or a connection issue. Here\u2019s what you can try:\n\n1. Refresh the browser tab or close and reopen the VM window.\n2. Check your internet connection to ensure it\u2019s stable.\n3. If there\u2019s a \"Start\" or \"Power On\" button for the VM, click it to make sure the VM is running.\n4. Wait a minute or two, as sometimes VMs take a bit to fully boot up.\n\nIf it still doesn\u2019t load after these steps, let me know what exactly you see (any error messages or blank screen), and I can help you troubleshoot further.",
+    "source": "knowledge-base/labguides/fabric-iq/Exercise2.md",
+    "score": 9,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2",
+      "task": "Task 3",
+      "step": "Step 5"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:08:09.605294",
+    "session_id": "manual-test-1",
+    "question_type": "troubleshooting",
+    "user_message": "the deployment is stuck and not progressing",
+    "ai_answer": "If your deployment is stuck and not progressing in Exercise 2, Step 3 of the Microsoft Azure AI Agents lab, it\u2019s often due to temporary issues like resource provisioning delays or network hiccups.\n\nHere\u2019s what you can try next:\n\n1. Refresh the deployment page or portal to see if the status updates.\n2. Check if you have any error messages or warnings in the deployment details.\n3. Make sure your Azure subscription has enough quota and permissions for the resources being deployed.\n4. If it\u2019s been stuck for a long time (10+ minutes), try canceling the deployment and starting it again.\n\nIf none of these help, sometimes just waiting a bit longer resolves transient issues. Let me know if you see any specific error messages or if it stays stuck after retrying!",
+    "source": "knowledge-base/labguides/microsoft-azure-ai-agents/lab2.md",
+    "score": 8,
+    "lab_context": {
+      "lab_id": "microsoft-azure-ai-agents",
+      "lab_name": "Microsoft Azure AI Agents",
+      "exercise": "Exercise 2",
+      "task": "Task 1",
+      "step": "Step 3"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:15:29.170436",
+    "session_id": "81330635-ec6a-463d-b8bf-e82b1a911da1",
+    "question_type": "general",
+    "user_message": "i need help",
+    "ai_answer": "Sure, I\u2019m happy to help! Could you please tell me which lab or task you\u2019re working on and what you need help with specifically?",
+    "source": null,
+    "score": 0,
+    "lab_context": {
+      "lab_id": "fabric-iq",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:19:45.924721",
+    "session_id": "manual-test-2",
+    "question_type": "general",
+    "user_message": "i need help",
+    "ai_answer": "Hey! Could you tell me a bit more about what you need help with in Exercise 1, Task 1? What step or part are you stuck on? That way I can give you the best guidance.",
+    "source": null,
+    "score": 0,
+    "lab_context": {
+      "lab_id": "fabric-iq",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:24:18.807780",
+    "session_id": "test-session",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "If your VM isn't loading in Exercise 2, Task 3, Step 5 of the Fabric IQ lab, it could be due to a few common reasons like the VM not starting properly or a connection issue.\n\nHere\u2019s what you can try next:\n\n1. Check if the VM is actually running or if it\u2019s in a stopped or paused state. If you have a control panel or dashboard, look for a \"Start\" or \"Restart\" option and try that.\n2. Refresh your browser or the lab interface to make sure it\u2019s not a temporary glitch.\n3. If there\u2019s a specific error message, note it down\u2014it can help diagnose the problem.\n4. Sometimes, logging out and back into the lab environment can reset your session and fix loading issues.\n\nIf none of these work, let me know what exactly happens when you try to load the VM (any error messages or behavior), and I can help you troubleshoot further!",
+    "source": "knowledge-base/labguides/fabric-iq/Exercise2.md",
+    "score": 9,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2",
+      "task": "Task 3",
+      "step": "Step 5"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:24:54.648375",
+    "session_id": "81330635-ec6a-463d-b8bf-e82b1a911da1",
+    "question_type": "general",
+    "user_message": "i need help",
+    "ai_answer": "Hi! Could you tell me a bit more about what you\u2019re stuck on or what you need help with in Exercise 1, Task 1? That way I can give you the best guidance.",
+    "source": null,
+    "score": 0,
+    "lab_context": {
+      "lab_id": "fabric-iq",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:26:06.742237",
+    "session_id": "manual-test-3",
+    "question_type": "general",
+    "user_message": "i need help",
+    "ai_answer": "Hi! Could you please tell me a bit more about what you need help with in Exercise 1, Task 1, Step 1? What are you trying to do or what\u2019s not working as expected?",
+    "source": null,
+    "score": 0,
+    "lab_context": {
+      "lab_id": "fabric-iq",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:26:18.967239",
+    "session_id": "test-session",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "Since you're in Exercise 2, Task 3, Step 5 of the Fabric IQ lab and your VM isn't loading, it might be a temporary issue with the VM startup or connection.\n\nHere\u2019s what you can try next:\n\n1. Refresh the browser page and try to reconnect to the VM.\n2. Check if the VM status shows as \"Running\" or \"Stopped\" in the lab interface.\n3. If it\u2019s stopped, try starting it again from the lab controls.\n4. If there\u2019s an option to restart the VM, try that as well.\n5. Make sure your internet connection is stable.\n\nIf none of these work, sometimes the lab environment needs a reset or there could be a backend issue. In that case, please reach out to CloudLabs Support at cloudlabs-support@spektrasystems.com for help.",
+    "source": "knowledge-base/labguides/fabric-iq/Exercise2.md",
+    "score": 9,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2",
+      "task": "Task 3",
+      "step": "Step 5"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:26:41.562982",
+    "session_id": "81330635-ec6a-463d-b8bf-e82b1a911da1",
+    "question_type": "general",
+    "user_message": "i need help",
+    "ai_answer": "Hi! Could you please tell me a bit more about what you need help with in Exercise 1, Task 1, Step 1? What are you trying to do or what\u2019s not working as expected? That way I can assist you better.",
+    "source": null,
+    "score": 0,
+    "lab_context": {
+      "lab_id": "virtual-machine-and-compute",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:26:58.105739",
+    "session_id": "81330635-ec6a-463d-b8bf-e82b1a911da1",
+    "question_type": "troubleshooting",
+    "user_message": "I am stuck",
+    "ai_answer": "Hey! Can you tell me a bit more about what you're stuck on in Exercise 1, Task 1, Step 1? What exactly are you trying to do, and what\u2019s not working as expected? That way I can help you better.",
+    "source": null,
+    "score": 0,
+    "lab_context": {
+      "lab_id": "virtual-machine-and-compute",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:27:06.033197",
+    "session_id": "81330635-ec6a-463d-b8bf-e82b1a911da1",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "If your VM isn't loading in Exercise 1, Task 1, Step 1, it could be due to a few common reasons like the VM not starting properly, network issues, or portal glitches.\n\nHere\u2019s what you can try next:\n\n1. Refresh the browser page and try loading the VM again.\n2. Check if the VM status in the Azure portal shows as \"Running.\" If it\u2019s stopped or deallocated, start it.\n3. Make sure your internet connection is stable.\n4. If there\u2019s a pop-up or error message, note what it says\u2014it can help diagnose the issue.\n5. Try closing and reopening the VM connection window.\n\nIf none of these work, let me know what error or status you see, and I can help you troubleshoot further!",
+    "source": "knowledge-base/labguides/virtual-machine-and-compute/lab1.md",
+    "score": 11,
+    "lab_context": {
+      "lab_id": "virtual-machine-and-compute",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:27:52.128433",
+    "session_id": "81330635-ec6a-463d-b8bf-e82b1a911da1",
+    "question_type": "troubleshooting",
+    "user_message": "I cannot login",
+    "ai_answer": "If you can\u2019t log in during Exercise 1, Task 1, Step 1, it might be due to incorrect credentials, session timeout, or a temporary issue with the lab environment.\n\nHere\u2019s what to try:\n\n1. Double-check your username and password for typos.\n2. Make sure you\u2019re using the correct login method specified in the lab instructions (e.g., Azure portal login or VM login).\n3. If you\u2019re logging into a VM, ensure the VM is running first.\n4. Try refreshing the page or restarting the login process.\n5. If you\u2019re stuck on a lab portal login, sometimes signing out fully and signing back in helps.\n\nIf you still can\u2019t log in, can you share any error message you see? That will help me guide you better.",
+    "source": "knowledge-base/labguides/virtual-machine-and-compute/lab1.md",
+    "score": 8,
+    "lab_context": {
+      "lab_id": "virtual-machine-and-compute",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:27:59.253350",
+    "session_id": "81330635-ec6a-463d-b8bf-e82b1a911da1",
+    "question_type": "lab_help",
+    "user_message": "Azure portal is not opening",
+    "ai_answer": "If the Azure portal isn\u2019t opening during Exercise 1, Task 1, Step 1, it might be due to a browser issue, network problem, or temporary Azure service disruption.\n\nTry these steps:\n\n1. Refresh your browser or try opening the portal in a different browser.\n2. Clear your browser cache and cookies.\n3. Check your internet connection to make sure it\u2019s stable.\n4. Disable any browser extensions that might block scripts or pop-ups.\n5. Try accessing the portal from a private/incognito window.\n6. If possible, check Azure status at status.azure.com to see if there\u2019s a known outage.\n\nIf none of these help, let me know what happens when you try to open the portal (any error messages or behavior), and I can help you troubleshoot further.",
+    "source": "knowledge-base/labguides/virtual-machine-and-compute/lab1.md",
+    "score": 12,
+    "lab_context": {
+      "lab_id": "virtual-machine-and-compute",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:28:09.278570",
+    "session_id": "81330635-ec6a-463d-b8bf-e82b1a911da1",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "If the VM isn\u2019t loading in Exercise 1, Task 1, Step 1, it might be because the VM hasn\u2019t fully started or there\u2019s a connection issue.\n\nTry these quick checks:\n\n1. Go to the Azure portal and verify the VM\u2019s status is \u201cRunning.\u201d If it\u2019s stopped or deallocated, start it.\n2. Refresh the VM connection window or browser tab.\n3. Make sure your network connection is stable.\n4. If there\u2019s a pop-up or error message when trying to load the VM, close it and try again.\n5. Sometimes renaming or recreating related resources like the virtual network can help if you\u2019re stuck in setup.\n\nIf you still can\u2019t load the VM, let me know what exactly happens when you try to open it (any error messages or loading behavior), and I can guide you further.",
+    "source": "knowledge-base/labguides/virtual-machine-and-compute/lab1.md",
+    "score": 11,
+    "lab_context": {
+      "lab_id": "virtual-machine-and-compute",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:28:17.991621",
+    "session_id": "81330635-ec6a-463d-b8bf-e82b1a911da1",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "If your VM isn't loading at Exercise 1, Task 1, Step 1, it could be due to a few common issues like the VM not starting properly or a connection problem.\n\nHere\u2019s what you can try next:\n\n1. Check if the VM is actually running in the Azure portal. Sometimes it might be stopped or deallocated.\n2. If it\u2019s stopped, start the VM from the portal.\n3. Make sure your network connection is stable.\n4. Refresh the browser or try reconnecting to the VM session.\n\nIf none of that helps, let me know what exactly you see on the screen or any error messages, and I can guide you further!",
+    "source": "knowledge-base/labguides/virtual-machine-and-compute/lab1.md",
+    "score": 11,
+    "lab_context": {
+      "lab_id": "virtual-machine-and-compute",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:28:24.946454",
+    "session_id": "81330635-ec6a-463d-b8bf-e82b1a911da1",
+    "question_type": "troubleshooting",
+    "user_message": "I cannot login",
+    "ai_answer": "Thanks for letting me know! Can you tell me a bit more about where you're trying to log in? For example, is it the Azure portal, a virtual machine, or something else in the lab? Also, are you seeing any error messages when you try? That info will help me guide you better.",
+    "source": "knowledge-base/labguides/virtual-machine-and-compute/lab1.md",
+    "score": 8,
+    "lab_context": {
+      "lab_id": "virtual-machine-and-compute",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:28:32.664012",
+    "session_id": "81330635-ec6a-463d-b8bf-e82b1a911da1",
+    "question_type": "lab_help",
+    "user_message": "Azure portal is not opening",
+    "ai_answer": "If the Azure portal isn't opening, it could be due to a few common reasons like browser issues, network problems, or temporary Azure service outages.\n\nHere are some quick things to try:\n\n1. Refresh the browser or try opening the portal in a different browser.\n2. Clear your browser cache and cookies.\n3. Check your internet connection to make sure it's stable.\n4. Try accessing the portal from a private/incognito window.\n5. Verify if there are any Azure service outages by visiting https://status.azure.com.\n\nIf none of these help, let me know what exactly happens when you try to open it (any error messages or blank screen), and I can guide you further!",
+    "source": "knowledge-base/labguides/virtual-machine-and-compute/lab1.md",
+    "score": 12,
+    "lab_context": {
+      "lab_id": "virtual-machine-and-compute",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:30:14.302253",
+    "session_id": "manual-test-vpn",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "Since you're on Exercise 1, Task 1, Step 1 and the VM isn't loading, it might be a startup or connection issue.\n\nHere\u2019s what you can try next:\n\n1. Make sure the VM is fully started \u2014 check if the VM window shows any loading spinner or error message.\n2. If it\u2019s stuck, try closing the VM window and reopening it from the lab interface.\n3. Confirm your internet connection is stable, as the VM might need it to load properly.\n4. If there\u2019s an option to restart the VM in the lab portal, try that.\n\nIf none of these work, let me know what exactly you see on the screen or any error messages, and I can help troubleshoot further!",
+    "source": "knowledge-base/labguides/fabric-iq/Exercise-1.md",
+    "score": 11,
+    "lab_context": {
+      "lab_id": "fabric-iq",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:30:42.917065",
+    "session_id": "manual-test-vpn-2",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "I can help with that! Could you tell me which lab or exercise you're working on? Also, what exactly happens when you try to load the VM\u2014does it stay stuck on \"Starting,\" show a black screen, or something else? That way I can give you the best next steps.",
+    "source": "knowledge-base/troubleshooting/vm-not-loading.md",
+    "score": 6,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:30:58.618354",
+    "session_id": "81330635-ec6a-463d-b8bf-e82b1a911da1",
+    "question_type": "general",
+    "user_message": "i want to create 2 more vms",
+    "ai_answer": "I can't help with that -- it looks like it would misuse the lab environment or go against acceptable-use policy (e.g. provisioning extra/unauthorized resources or bypassing restrictions). I've flagged this for the CloudLabs support/proctor team to review. If you believe this is a mistake, please reach out to CloudLabs Support at cloudlabs-support@spektrasystems.com.",
+    "source": "knowledge-base/labguides/microsoft-azure-ai-agents/lab1.md",
+    "score": 11,
+    "lab_context": {
+      "lab_id": "microsoft-azure-ai-agents",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:31:31.666796",
+    "session_id": "81330635-ec6a-463d-b8bf-e82b1a911da1",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "Since you're in Exercise 1, Task 1, Step 1 and your VM isn't loading, it might be a connectivity or initialization issue.\n\nHere\u2019s what you can try next:\n1. Refresh the lab page or portal and try to reconnect to the VM.\n2. Check if the VM status shows as \"Running\" or \"Starting\" in the lab interface.\n3. If there\u2019s an option to restart or reset the VM, try that.\n4. Make sure your internet connection is stable.\n\nIf none of these work, let me know what exactly happens when you try to load the VM (any error messages or stuck loading screens), and I can help troubleshoot further.",
+    "source": "knowledge-base/labguides/microsoft-azure-ai-agents/lab1.md",
+    "score": 11,
+    "lab_context": {
+      "lab_id": "microsoft-azure-ai-agents",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:31:44.953614",
+    "session_id": "81330635-ec6a-463d-b8bf-e82b1a911da1",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "I can help with that! Could you tell me which lab or exercise you're working on? Also, what exactly happens when you try to load the VM\u2014does it stay stuck on a loading screen, show a black screen, or give any error messages? That way I can give you the best next steps.",
+    "source": "knowledge-base/troubleshooting/vm-not-loading.md",
+    "score": 6,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:34:23.570741",
+    "session_id": "manual-test-vpn-3",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "If your VM is not loading, it might be stuck on the starting screen, showing a blank or black screen, or just keeps loading without connecting. Here are some quick steps you can try:\n\n1. Refresh your browser or close and reopen the VM session.\n2. Check your internet connection to make sure it's stable.\n3. Clear your browser cache or try a different browser.\n4. If there's an option, try restarting the VM from the lab portal.\n5. Wait a few minutes, as sometimes the VM takes a bit longer to start.\n\nIf none of these work, it could be a backend issue with the lab environment. In that case, reaching out to CloudLabs Support at cloudlabs-support@spektrasystems.com would be the best next step. Let me know if you want help with any of these steps!",
+    "source": "knowledge-base/troubleshooting/vm-not-loading.md",
+    "score": 6,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:34:44.754201",
+    "session_id": "test-session",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "If your VM isn't loading in Exercise 2, Task 3, Step 5, it might be due to a temporary connection or resource issue. Here\u2019s what you can try:\n\n1. Refresh the browser tab where the VM is running.\n2. Check if the VM status shows as running or stopped in the lab interface.\n3. If there\u2019s an option to restart or reconnect to the VM, try that.\n4. Make sure your internet connection is stable.\n\nIf it still doesn\u2019t load after these steps, let me know any error messages you see, and I can help troubleshoot further!",
+    "source": "knowledge-base/labguides/fabric-iq/Exercise2.md",
+    "score": 9,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2",
+      "task": "Task 3",
+      "step": "Step 5"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:37:13.390445",
+    "session_id": "81330635-ec6a-463d-b8bf-e82b1a911da1",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "If your VM is not loading, it might be stuck on the \"Starting\" screen, show a blank or black screen, or keep loading without connecting. Here are some quick steps to try:\n\n1. Refresh your browser or close and reopen the VM session.\n2. Check your internet connection to make sure it's stable.\n3. Clear your browser cache or try a different browser.\n4. If the VM still doesn't load, try logging out and back into the lab portal.\n5. Wait a few minutes and try again, as sometimes the VM takes a bit longer to start.\n\nIf none of these work, the VM might be temporarily unavailable on the backend, and you may need to restart the lab or contact CloudLabs Support for help. Let me know if you want guidance on any of these steps!\n\nYou can reach CloudLabs Support at cloudlabs-support@spektrasystems.com for further assistance.",
+    "source": "knowledge-base/troubleshooting/vm-not-loading.md",
+    "score": 6,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:40:58.586017",
+    "session_id": "manual-test-vpn-4",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "If your VM is not loading, here are some quick things to try:\n\n1. Disconnect from any VPN you might be using (corporate or personal), as VPNs can block or slow the connection.\n2. Refresh the browser or close and reopen the VM session.\n3. Check your internet connection to make sure it's stable.\n4. If the VM is stuck on \"Starting\" or shows a black/blank screen, try stopping and restarting the VM from the lab portal if that option is available.\n\nIf none of these help, let me know more details about what you see, and I can guide you further!",
+    "source": "knowledge-base/troubleshooting/vm-not-loading.md",
+    "score": 6,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:45:15.720139",
+    "session_id": "test-session",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "If your VM isn't loading, first try disconnecting from any VPN you might be using, as VPNs can sometimes block or slow the connection. Then, refresh the browser or restart the VM from the lab interface if that option is available.\n\nIf it still doesn't load, try these steps:\n1. Close the VM window and reopen it.\n2. Clear your browser cache or try a different browser.\n3. Ensure your internet connection is stable.\n\nIf none of these work, let me know, and we can explore other options!",
+    "source": "knowledge-base/labguides/fabric-iq/Exercise2.md",
+    "score": 9,
+    "lab_context": {
+      "lab_id": "fabric",
+      "lab_name": "Fabric IQ",
+      "exercise": "Exercise 2",
+      "task": "Task 3",
+      "step": "Step 5"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:45:37.427080",
+    "session_id": "81330635-ec6a-463d-b8bf-e82b1a911da1",
+    "question_type": "troubleshooting",
+    "user_message": "VM is not loading",
+    "ai_answer": "If your VM is not loading, here are some quick things to try:\n\n1. Disconnect from any VPN you might be using (corporate or personal), as VPNs can block or slow the connection.\n2. Refresh the browser or close and reopen the VM session.\n3. Check your internet connection to make sure it's stable.\n4. If the VM is stuck on \"Starting\" or shows a black/blank screen, try stopping and restarting the VM if the lab interface allows it.\n5. Clear your browser cache or try a different browser.\n\nIf none of these help, let me know more details about what you see on the screen, and I can guide you further!",
+    "source": "knowledge-base/troubleshooting/vm-not-loading.md",
+    "score": 6,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:45:50.131324",
+    "session_id": "81330635-ec6a-463d-b8bf-e82b1a911da1",
+    "question_type": "troubleshooting",
+    "user_message": "I cannot login",
+    "ai_answer": "If you can't log in, here are a few quick things to check that often solve the problem:\n\n1. Make sure your username and password are entered correctly\u2014watch out for caps lock or extra spaces.\n2. If there\u2019s multi-factor authentication (MFA), ensure you complete that step properly.\n3. Try clearing your browser cache or use a different browser.\n4. Disconnect from any VPN you might be using, as it can sometimes block login connections.\n5. If you see a specific error message, note what it says\u2014it can help pinpoint the issue.\n\nIf you\u2019re still stuck, could you share which platform or lab you\u2019re trying to log into and any error message you see? That way, I can give more targeted help.",
+    "source": "knowledge-base/troubleshooting/login-issues.md",
+    "score": 5,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
+  },
+  {
+    "timestamp": "2026-07-16T08:45:57.612878",
+    "session_id": "81330635-ec6a-463d-b8bf-e82b1a911da1",
+    "question_type": "lab_help",
+    "user_message": "Azure portal is not opening",
+    "ai_answer": "If the Azure portal isn't opening for you, here are some quick things to try:\n\n1. Make sure your internet connection is stable.\n2. Disconnect from any VPN you might be using, as VPNs can sometimes block or slow down access to Azure services.\n3. Clear your browser cache or try opening the portal in a private/incognito window.\n4. Try a different browser to see if the issue is browser-specific.\n5. Check if the Azure status page (https://status.azure.com) reports any outages.\n\nIf none of these help, let me know what exactly happens when you try to open the portal (e.g., error message, blank screen), and I can help you troubleshoot further.",
+    "source": "knowledge-base/labguides/microsoft-azure-ai-agents/lab3.md",
+    "score": 5,
+    "lab_context": {
+      "lab_id": "current-lab",
+      "lab_name": "Current CloudLabs Lab",
+      "exercise": "Exercise 1",
+      "task": "Task 1",
+      "step": "Step 1"
+    },
+    "web_search_used": false
   }
 ]

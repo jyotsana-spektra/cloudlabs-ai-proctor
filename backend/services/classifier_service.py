@@ -177,3 +177,58 @@ def wants_unavailable_action(question: str) -> bool:
 
     question = question.lower().strip()
     return any(re.search(pattern, question) for pattern in ACTION_REQUEST_PATTERNS)
+
+
+# Patterns for messages that look like an attempt to abuse/misuse the lab
+# environment rather than a genuine lab question -- e.g. spinning up extra
+# resources beyond what the lab assigned, trying to get Brainy to ignore
+# its own instructions, or other clearly malicious intent (credential
+# theft, attacking other systems, etc.). These should never be answered
+# normally: Brainy should refuse and flag the session for the CloudLabs
+# support/proctor team to review, since this is a policy-violation signal
+# rather than something the AI should try to help with.
+RESOURCE_MISUSE_PATTERNS = [
+    r"\b(create|spin up|provision|deploy|launch)\b.{0,20}\b(extra|additional|another|more|multiple|unlimited)\b.{0,20}\b(vm|vms|virtual machine|machines|resource|resources|subscription|subscriptions)\b",
+    r"\b(extra|additional|unlimited)\b.{0,15}\b(vm|vms|resources|credits)\b",
+    r"\bcreate\b.{0,15}\b(another|a new|extra)\b.{0,15}\bsubscription\b",
+    r"\bbypass\b.{0,20}\b(quota|limit|restriction)\b",
+    r"\b(increase|remove|get around)\b.{0,15}\bquota\b",
+    r"\bfree\b.{0,10}\bazure\b.{0,10}\bcredit\b",
+    r"\b(mine|mining)\b.{0,15}\b(crypto|cryptocurrency|bitcoin|ethereum)\b",
+    r"\buse\b.{0,20}\b(this|the)\b.{0,15}\blab\b.{0,20}\bfor\b.{0,20}\b(personal|my own|side)\b.{0,15}\bproject\b",
+    r"\bkeep\b.{0,15}\b(this|the)\b.{0,15}\b(vm|environment|resources|subscription)\b.{0,20}\bafter\b.{0,15}\blab\b.{0,15}\bends\b",
+]
+
+MISCHIEF_PATTERNS = [
+    r"\bignore\b.{0,20}\b(previous|prior|all|your)\b.{0,15}\binstructions\b",
+    r"\bignore\b.{0,15}\byour\b.{0,15}\brules\b",
+    r"\bjailbreak\b",
+    r"\bpretend\b.{0,15}\byou\b.{0,15}\bare\b",
+    r"\bact as\b.{0,15}\b(dan|unrestricted|jailbroken)\b",
+    r"\bhack\b.{0,20}\b(into|the|another)\b",
+    r"\bexploit\b.{0,20}\b(vulnerability|system|environment|vm)\b",
+    r"\b(ddos|denial of service)\b",
+    r"\b(brute[\s-]?force)\b.{0,15}\bpassword\b",
+    r"\bsql injection\b",
+    r"\b(steal|share|sell)\b.{0,15}\b(credential|password|login)\b",
+    r"\baccess\b.{0,20}\b(another|someone else|other)\b.{0,15}\b(student|user|account|environment|lab)\b",
+    r"\bunauthorized access\b",
+    r"\bcrack\b.{0,15}\bpassword\b",
+    r"\b(malware|ransomware|phishing)\b",
+    r"\battack\b.{0,20}\b(another|other|external)\b.{0,15}\b(system|server|network|site)\b",
+]
+
+MISUSE_PATTERNS = RESOURCE_MISUSE_PATTERNS + MISCHIEF_PATTERNS
+
+
+def detects_misuse(question: str) -> bool:
+    """True when the learner's message looks like an attempt to misuse the
+    lab environment (e.g. provisioning extra/unauthorized resources, crypto
+    mining, bypassing quotas) or other clearly malicious intent (prompt
+    injection / jailbreak attempts, credential theft, attacking other
+    systems). This is independent of question_type -- Brainy should never
+    try to help with these, and the session should be flagged for the
+    CloudLabs support/proctor team to review instead."""
+
+    question = question.lower().strip()
+    return any(re.search(pattern, question) for pattern in MISUSE_PATTERNS)

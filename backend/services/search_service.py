@@ -60,6 +60,15 @@ def _file_matches_number(file_stem: str, number: str) -> bool:
     return any(re.match(pattern, stem) for pattern in patterns)
 
 
+def _extract_number(text: str | None) -> str | None:
+    """Pulls the first digit sequence out of a label like "Exercise 2" so it
+    can be matched against numbered lab-guide filenames (exercise2.md)."""
+    if not text:
+        return None
+    match = re.search(r"\d+", text)
+    return match.group(0) if match else None
+
+
 def _score_chunk(
     chunk_lower: str,
     file_lower: str,
@@ -67,6 +76,7 @@ def _score_chunk(
     keywords: list[str],
     references: dict,
     lab_id: str | None,
+    exercise: str | None,
     task: str | None,
     step: str | None,
 ) -> int:
@@ -85,12 +95,24 @@ def _score_chunk(
     # Structured metadata match -- these come from actual session/lab
     # context, not from parsing question text, so they can't be polluted
     # by template labels.
+    if exercise and exercise.lower() in file_lower:
+        score += 3
     if task and task.lower() in file_lower:
         score += 3
     if step and step.lower() in chunk_lower:
         score += 2
     if lab_id and lab_id.lower() in file_lower:
         score += 3
+
+    # The structured `exercise` field (from the UI's lab-context selector,
+    # not free text) is the strongest signal for WHICH numbered lab-guide
+    # file to use (exercise2.md, lab3.md, 03-delta-lake.md...) -- it must be
+    # applied even when the learner's own message never repeats the number
+    # (e.g. they just ask "why isn't this working" while Exercise 2 is
+    # selected in the sidebar).
+    exercise_number = _extract_number(exercise)
+    if exercise_number and _file_matches_number(file_stem, exercise_number):
+        score += 5
 
     # Numbered references parsed from the learner's raw message (e.g.
     # "lab 1"/"exercise 1" -> lab1.md, 01-lakehouse.md). Weighted heavily
@@ -112,6 +134,7 @@ def _search_folders(
     keywords: list[str],
     references: dict,
     lab_id: str | None,
+    exercise: str | None,
     task: str | None,
     step: str | None,
 ) -> tuple[Path | None, int, str]:
@@ -138,6 +161,7 @@ def _search_folders(
                         keywords,
                         references,
                         lab_id,
+                        exercise,
                         task,
                         step,
                     )
@@ -157,6 +181,7 @@ def search_knowledge_base(
     question: str,
     question_type: str,
     lab_id: str | None = None,
+    exercise: str | None = None,
     task: str | None = None,
     step: str | None = None,
 ) -> dict:
@@ -165,8 +190,11 @@ def search_knowledge_base(
     Do NOT pass a template string containing labels like
     "Lab Name:", "Task:", "Step:" -- those labels pollute keyword
     scoring because they appear in every single request regardless
-    of topic. Use the `lab_id` / `task` / `step` params below instead,
-    which are matched separately as structured metadata.
+    of topic. Use the `lab_id` / `exercise` / `task` / `step` params below
+    instead, which are matched separately as structured metadata. All four
+    fields (when provided) are always applied together so the retrieved
+    content is scoped to the exact lab, exercise, task, AND step the
+    learner is on -- never just a subset of them.
     """
     kb_path = Path("knowledge-base")
 
@@ -206,7 +234,7 @@ def search_knowledge_base(
     if lab_id:
         lab_folder = kb_path / "labguides" / lab_id
         best_match, best_score, best_chunk = _search_folders(
-            [lab_folder], keywords, references, lab_id, task, step
+            [lab_folder], keywords, references, lab_id, exercise, task, step
         )
 
         if best_match and best_score >= 3:
@@ -229,7 +257,7 @@ def search_knowledge_base(
     ]
 
     best_match, best_score, best_chunk = _search_folders(
-        all_folders, keywords, references, lab_id, task, step
+        all_folders, keywords, references, lab_id, exercise, task, step
     )
 
     if best_match and best_score >= 3:

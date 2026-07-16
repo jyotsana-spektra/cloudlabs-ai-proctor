@@ -3,13 +3,35 @@ import API from "./services/api";
 import { SUPPORT_EMAIL, LIVE_CHAT_URL } from "./config";
 import "./App.css";
 
-// Fixed session id used for every request from this browser tab. Because
-// it never changes, the backend keeps accumulating conversation history
-// and a cached knowledge-base result under this same id -- both MUST be
-// explicitly cleared (via clearBackendSession) whenever the learner clears
-// the chat or switches to a different lab, otherwise Brainy keeps answering
-// using the previous lab's history/context.
-const SESSION_ID = "frontend-user-1";
+// Per-browser session id used for every request. This MUST be unique per
+// visitor -- it used to be a single hardcoded literal ("frontend-user-1")
+// shared by every single person who opened the live URL, which meant every
+// visitor's conversation history AND cached knowledge-base result on the
+// backend (see backend/main.py _last_kb_result_by_session) were shared
+// too, so a new visitor could see stale answers/history left over from a
+// previous person's session. Generated once per browser and persisted in
+// localStorage so a returning visitor keeps their own history, but a
+// different browser/device always gets its own fresh session.
+function getOrCreateSessionId() {
+  const STORAGE_KEY = "brainy_session_id";
+  try {
+    let id = localStorage.getItem(STORAGE_KEY);
+    if (!id) {
+      id =
+        typeof crypto !== "undefined" && crypto.randomUUID
+          ? crypto.randomUUID()
+          : `session-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      localStorage.setItem(STORAGE_KEY, id);
+    }
+    return id;
+  } catch {
+    // localStorage unavailable (e.g. private mode) -- fall back to a
+    // per-load id rather than a shared constant.
+    return `session-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  }
+}
+
+const SESSION_ID = getOrCreateSessionId();
 
 // "Current Screen" / "Detected Page" choices shown in Screen Awareness,
 // scoped per lab_id (matches the knowledge-base labguides/ folder names)
@@ -20,23 +42,23 @@ const SESSION_ID = "frontend-user-1";
 const SCREEN_OPTIONS_BY_LAB = {
   "current-lab": {
     screens: ["Azure Portal", "Microsoft Fabric", "CloudLabs VM", "Login Page", "Power Automate"],
-    pages: ["Unknown", "Home Page", "Workspace Page", "Wrong Page", "Error Page"],
+    pages: ["Unknown", "Home Page", "Workspace Page"],
   },
   "fabric-iq": {
     screens: ["Microsoft Fabric", "Power BI Service", "Azure Portal", "Login Page"],
-    pages: ["Unknown", "Home Page", "Workspace Page", "Lakehouse Page", "Eventhouse Page", "Data Agent Page", "Ontology Page", "Wrong Page", "Error Page"],
+    pages: ["Unknown", "Home Page", "Workspace Page", "Lakehouse Page", "Eventhouse Page", "Data Agent Page", "Ontology Page"],
   },
   "virtual-machine-and-compute": {
     screens: ["CloudLabs VM", "Remote Desktop (RDP)", "Azure Portal", "Login Page"],
-    pages: ["Unknown", "VM Connection Page", "Remote Desktop Session", "Azure Portal Home", "Resource Group Page", "Wrong Page", "Error Page"],
+    pages: ["Unknown", "VM Connection Page", "Remote Desktop Session", "Azure Portal Home", "Resource Group Page"],
   },
   "microsoft-azure-ai-agents": {
     screens: ["Azure AI Studio", "Azure Portal", "Login Page"],
-    pages: ["Unknown", "Agent Playground", "Model Deployment Page", "Azure Portal Home", "Wrong Page", "Error Page"],
+    pages: ["Unknown", "Agent Playground", "Model Deployment Page", "Azure Portal Home"],
   },
   "github-copilot-innovation-workshop-mastering-github-copilot-across-the-sdlc": {
     screens: ["VS Code", "GitHub", "Azure Portal", "Login Page"],
-    pages: ["Unknown", "Repository Page", "Copilot Chat Panel", "Pull Request Page", "Actions Page", "Wrong Page", "Error Page"],
+    pages: ["Unknown", "Repository Page", "Copilot Chat Panel", "Pull Request Page", "Actions Page"],
   },
 };
 
@@ -88,6 +110,49 @@ function App() {
     { icon: "👤", text: "I cannot login" },
     { icon: "🌐", text: "Azure portal is not opening" },
     { icon: "⚠️", text: "I am stuck" },
+  ];
+
+  // Shown as clickable cards on the very first (welcome) message so
+  // learners immediately see what Brainy can do, instead of a plain
+  // sentence. Each one sends a real prompt when clicked, same as
+  // quickPrompts, just framed as a capability rather than a problem report.
+  const capabilityPrompts = [
+    {
+      icon: "💬",
+      title: "Explain the current step",
+      subtitle: "I'll break it down for you",
+      text: "Explain the current step to me in simple terms.",
+    },
+    {
+      icon: "➡️",
+      title: "Next step guidance",
+      subtitle: "I'll tell you what to do next",
+      text: "What should I do next?",
+    },
+    {
+      icon: "🛠️",
+      title: "Troubleshoot issues",
+      subtitle: "Fix errors and resolve problems",
+      text: "I'm running into an issue, help me troubleshoot it.",
+    },
+    {
+      icon: "💻",
+      title: "Generate commands",
+      subtitle: "Azure CLI, PowerShell, Bicep etc.",
+      text: "Generate the exact commands I need for this step.",
+    },
+    {
+      icon: "📘",
+      title: "Microsoft & Azure concepts",
+      subtitle: "Get clear explanations",
+      text: "Explain the Microsoft/Azure concept behind this lab step.",
+    },
+    {
+      icon: "✅",
+      title: "Best practices",
+      subtitle: "Tips to complete the lab",
+      text: "What are the best practices for completing this lab step?",
+    },
   ];
 
   useEffect(() => {

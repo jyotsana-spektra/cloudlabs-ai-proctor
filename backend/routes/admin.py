@@ -3,6 +3,7 @@ from pathlib import Path
 from fastapi import APIRouter
 
 from backend.config import settings
+from backend.services.escalation_service import get_flagged_alerts
 
 router = APIRouter()
 
@@ -12,6 +13,16 @@ def admin_status():
     return {
         "status": "Admin route is available"
     }
+
+
+@router.get("/alerts")
+def list_flagged_alerts():
+    """
+    Auto-flagged resource-misuse/mischief alerts (see
+    classifier_service.detects_misuse) for the CloudLabs support/proctor
+    team to review -- most recent first.
+    """
+    return {"alerts": list(reversed(get_flagged_alerts()))}
 
 
 @router.get("/labs")

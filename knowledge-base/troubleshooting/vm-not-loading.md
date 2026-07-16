@@ -63,7 +63,15 @@ Ensure that:
 
 ---
 
-## Step 4 – Clear Browser Cache
+## Step 4 – Disconnect from VPN
+
+If you are connected to a VPN, disconnect from it before retrying.
+
+Corporate or personal VPNs can block or slow down the connection to the CloudLabs VM, even when the rest of your internet connection appears stable. Disconnect the VPN, then refresh the lab page and try loading the VM again.
+
+---
+
+## Step 5 – Clear Browser Cache
 
 Clear:
 
@@ -75,7 +83,7 @@ Then reopen the lab.
 
 ---
 
-## Step 5 – Try an Incognito Window
+## Step 6 – Try an Incognito Window
 
 Open the lab using:
 
@@ -86,7 +94,7 @@ This eliminates cached browser data.
 
 ---
 
-## Step 6 – Disable Browser Extensions
+## Step 7 – Disable Browser Extensions
 
 Temporarily disable extensions including:
 
@@ -98,7 +106,7 @@ Reload the lab.
 
 ---
 
-## Step 7 – Restart the Lab Session
+## Step 8 – Restart the Lab Session
 
 If the VM remains unavailable:
 
