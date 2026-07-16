@@ -221,12 +221,44 @@ def chat(request: ChatRequest):
         )
 
         # If this message didn't carry enough real signal (e.g. a generic
-        # "still stuck" follow-up), fall back to the last successful KB result
+        # "still stuck" follow-up) AND we couldn't resolve it to the current
+        # step's content either, fall back to the last successful KB result
         # for this session instead of trusting a near-empty/unfocused search.
-        if kb_result.get("low_signal") and session_id in _last_kb_result_by_session:
+        # A "context_only" lookup (see search_service) already found real
+        # content for the learner's current exercise/task/step, so it must
+        # NOT be discarded in favor of a stale previous answer.
+        if (
+            kb_result.get("low_signal")
+            and not kb_result.get("found")
+            and session_id in _last_kb_result_by_session
+        ):
             kb_result = _last_kb_result_by_session[session_id]
         elif kb_result.get("found"):
             _last_kb_result_by_session[session_id] = kb_result
+
+        # A context-only lookup means the learner hasn't described an actual
+        # problem yet -- the retrieved content is just the current step's
+        # instructions, not a matched diagnosis. Flag this clearly for the
+        # AI so it asks a specific, grounded clarifying question about why
+        # the learner can't complete that step, instead of either a fully
+        # generic question or jumping straight to troubleshooting steps.
+        if kb_result.get("context_only"):
+            kb_result = {
+                **kb_result,
+                "content": (
+                    "NOTE: The learner has not described a specific problem "
+                    "yet. The content below is simply the official lab "
+                    "guide's instructions for the exercise/task/step they "
+                    "are currently on (not a matched diagnosis). Briefly "
+                    "reference what this step actually asks them to do, "
+                    "then ask a short, specific question about what's "
+                    "happening when they try it or why they're unable to "
+                    "complete it (e.g. an error message, nothing happening, "
+                    "an unexpected result, or not knowing where to click). "
+                    "Do not give troubleshooting steps yet -- no problem "
+                    "has been described.\n\n" + kb_result["content"]
+                ),
+            }
 
     history = get_session(session_id)
 

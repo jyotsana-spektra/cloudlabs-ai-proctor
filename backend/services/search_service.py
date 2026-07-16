@@ -201,11 +201,31 @@ def search_knowledge_base(
     keywords = _extract_keywords(question)
 
     # If the message carries almost no real signal (e.g. a generic
-    # "still stuck" style follow-up), say so explicitly instead of
-    # letting scoring fall back to noise. The caller (main.py) should
-    # treat this as "re-use the previous answer's context" rather than
-    # blindly re-searching.
+    # "still stuck"/"i need help" style message), the raw text itself can't
+    # drive a keyword search. But if the learner has a real, specific
+    # exercise selected (ideally with task/step too), we still know exactly
+    # which part of the lab guide they're on -- so look that up directly,
+    # scoped purely by the structured lab_id/exercise/task/step metadata
+    # (no keyword requirement at all). This lets Brainy ask a specific,
+    # informed clarifying question grounded in what that step actually asks
+    # the learner to do, instead of a generic "what are you stuck on?".
     if len(keywords) < 2:
+        if lab_id and exercise:
+            lab_folder = kb_path / "labguides" / lab_id
+            best_match, best_score, best_chunk = _search_folders(
+                [lab_folder], [], {}, lab_id, exercise, task, step
+            )
+
+            if best_match and best_score > 0:
+                return {
+                    "found": True,
+                    "source": str(best_match),
+                    "content": best_chunk,
+                    "score": best_score,
+                    "low_signal": True,
+                    "context_only": True,
+                }
+
         return {
             "found": False,
             "source": None,
